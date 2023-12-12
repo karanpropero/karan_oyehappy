@@ -1,0 +1,8 @@
+{% if collection.metafields.custom_fields["collection_bg_pic"] != blank %}
+  <div class="custom-field custom-field__collection-bg-pic custom-field__type--image">
+    <h3 class="custom-field--title">collection_bg_pic</h3>
+    <div class="custom-field--value">  
+      {% render 'cf-image' with image: collection.metafields.custom_fields["collection_bg_pic"], print: 'url' %}
+    </div>
+  </div>
+{% endif %}

@@ -1,0 +1,190 @@
+{{ 'order-form.css' | asset_url | stylesheet_tag }}
+
+                          
+<div class="container customization_form">
+  <form action="" name="{{ product.title }}">
+    <div class="form-header">
+      <span class="form-title" id="formTitleElem">{{ product.title }}</span>
+    </div>
+
+    <div class="form-container">
+      <div class="form-inner">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Name of the special person</label>
+            <div class="form-field">
+              <input
+                type="text"
+                class="form-control"
+                name="properties[Name_of_the_Special_Person]"
+                form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+                maxlength="50"
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Sender's name (optional)</label>
+            <div class="form-field">
+              <input
+                type="text"
+                class="form-control"
+                name="properties[Sender_s_name_Only_If_you_d_like_it_mentioned_on_the_certificate]"
+                form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+                maxlength="50"
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Date of the special occasion</label>
+            <div class="form-field">
+              <input
+                type="date"
+                class="form-control"
+                name="properties[Date_of_the_special_occasion]"
+                form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+              >
+              <span class="label-text">(DD/MM/YYYY)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Zodiac sign of the special person</label>
+            <div class="form-field">
+              <select
+                class="form-control"
+                id="dropdown"
+                name="properties[Zodiac_sign_of_the_special_person]"
+                form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+              >
+                <option value=""></option>
+                <option value="Aquarius">Aquarius</option>
+                <option value="Pisces">Pisces</option>
+                <option value="Aries">Aries</option>
+                <option value="Taurus">Taurus</option>
+                <option value="Gemini">Gemini</option>
+                <option value="Cancer">Cancer</option>
+                <option value="Leo">Leo</option>
+                <option value="Virgo">Virgo</option>
+                <option value="Libra">Libra</option>
+                <option value="Scorpio">Scorpio</option>
+                <option value="Sagittarius">Sagittarius</option>
+                <option value="Capricorn">Capricorn</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Message for the special person (no emojis, please)</label>
+            <div class="form-field">
+              <textarea
+                type="text"
+                class="form-control"
+                name="properties[Message_for_the_star_chart_Please_do_not_use_emojis_in_the_message]"
+                form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+                maxlength="150"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+
+         <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Please specify to whom should the certificate be sent:</label>
+            <div class="form-field">
+              <div class="radio-group">
+                <input
+                  type="radio"
+                  class="radio"
+                  name="properties[Please_specify_to_whom_should_the_certificate_be_sent]"
+                  value="To My Email ID"
+                  form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+                >
+                <span>To My Email ID</span>
+              </div>
+              <div class="radio-group">
+                <input
+                  type="radio"
+                  class="radio"
+                  name="properties[Please_specify_to_whom_should_the_certificate_be_sent]"
+                  value="To Other Email"
+                  form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+                >
+                <span>To Other Email</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Please mention the receiver's email ID here:</label>
+            <div class="form-field">
+              <input
+                type="email"
+                class="form-control"
+                name="properties[Please_mention_the_receiver_s_email_ID_here]"
+                form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+              >
+              <i class="fa-thin fa-envelope fa-sm icon"></i>
+            </div>
+          </div>
+        </div>
+        
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Your e-mail address (for order communication)</label>
+            <div class="form-field">
+              <input
+                type="email"
+                class="form-control"
+                name="properties[Your_e_mail_address]"
+                form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+              >
+              <i class="fa-thin fa-envelope fa-sm icon"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row hidden">
+          <div class="form-group">
+            <label class="form-label">Item Id</label>
+            <div class="form-field">
+              <input
+                type="text"
+                class="form-control"
+                name="properties[Item Id]"
+                value="{{ product.metafields.custom.item_id }}"
+                form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row hidden">
+          <div class="form-group">
+            <label class="form-label">Record Id</label>
+            <div class="form-field">
+              <input
+                type="text"
+                class="form-control"
+                name="properties[Record Id]"
+                value="{{ product.metafields.custom.record_id }}"
+                form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

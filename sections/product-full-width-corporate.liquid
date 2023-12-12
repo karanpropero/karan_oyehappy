@@ -1,0 +1,366 @@
+{%- if section.blocks.size > 0 -%}
+  <div class="page-width">
+    <div class="product-tabs">
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
+          {%- when '@app' -%}
+            {% render block %}
+          {%- when 'reviews' -%}
+            <div class="product-block product-block--tab product-reviews" {{ block.shopify_attributes }}>
+              <div id="shopify-product-reviews-{{ product.id }}"></div>
+              {% assign tab_id = block.id | append: product.id %}
+              {% capture tab_title %}
+              {{ 'products.general.reviews' | t }}
+            {% endcapture %}
+              {% capture tab_content %}
+              <div id="shopify-product-reviews" data-id="{{ product.id }}">{{ product.metafields.spr.reviews }}</div>
+            {% endcapture %}
+              {%- render 'tab', id: tab_id, title: tab_title, content: tab_content -%}
+            </div>
+          {%- when 'separator' -%}
+            <div class="product-block"><hr></div>
+          {%- when 'text' -%}
+            <div {{ block.shopify_attributes }} class="product-block">
+              {{ block.settings.text }}
+            </div>
+          {%- when 'tab' -%}
+            <div class="product-block product-block--tab __tipping" {{ block.shopify_attributes }}>
+              {% assign tab_id = block.id | append: product.id %}
+              {% capture tab_content %}
+
+              
+              {{ block.settings.content-corp }}
+              {{ block.settings.page-corp.content-corp }}
+             
+               {% endcapture %}
+              {%- render 'tab', id: tab_id, title: block.settings.title_corp, content: tab_content -%}
+            </div>
+
+            {% comment %}
+               {% if product.metafields.my_fields.how_to_customize %}
+              	<div class="product-block product-block--tab">
+                     <div class="collapsibles-wrapper">
+                       <button type="button" class="label collapsible-trigger collapsible-trigger-btn collapsible-trigger-btn--borders collapsible--auto-height" aria-controls="Product-content-{{ id }}">
+                         {% comment %}<span class="block-icon"><img src="{{ 'how-to-customise.svg' | file_url }}" alt="how to customize" /></span>&nbsp;{% endcomment %}How to Customize
+                         {%- render 'collapsible-icons' -%}
+                       </button>
+                       <div id="Product-content-{{ id }}" class="collapsible-content collapsible-content--all">
+                         <div class="collapsible-content__inner rte">
+                           {{ product.metafields.my_fields.how_to_customize }}
+                         </div>
+                       </div>
+                     </div>
+              	</div>
+              {% endif %}
+            {% endcomment %}
+          {%- when 'contact' -%}
+            <div class="product-block product-block--tab __tipping" {{ block.shopify_attributes }}>
+              {%- render 'tab-contact', block: block -%}
+            </div>
+          {%- when 'description' -%}
+            <div
+              class="product-block{% if block.settings.is_tab %} product-block--tab{% endif %} __tipping"
+              {{ block.shopify_attributes }}
+            >
+              {%- render 'product-description', id: block.id, product: product, is_tab: block.settings.is_tab -%}
+            </div>
+          {%- when 'share' -%}
+            <div class="product-block" {{ block.shopify_attributes }}>
+              {%- render 'social-sharing',
+                share_title: product.title,
+                share_permalink: product.url,
+                share_image: product
+              -%}
+            </div>
+          {%- when 'custom' -%}
+            <div class="product-block" {{ block.shopify_attributes }}>
+              {{ block.settings.code }}
+            </div>
+        {%- endcase -%}
+      {%- endfor -%}
+      {% assign customisedFlag = false %}
+
+      {% if product.tags contains 'Customised' %}
+        {% assign customisedFlag = true %}
+      {% endif %}
+
+      {% capture tab_content %}
+            {% if product.metafields.my_fields.is_virtual %}
+            {{ settings.content_virtual_corp }}
+            {{ settings.page_virtual-corp.content-corp }}
+
+            {% else %}
+            {{ settings.content-corp }}
+            {{ settings.page-corp.content-corp }}
+            {% endif %}
+            {% endcapture %}
+
+      <div class="product-block product-block--tab">
+        <div class="collapsibles-wrapper">
+          <button
+            type="button"
+            class="label collapsible-trigger collapsible-trigger-btn collapsible-trigger-btn--borders collapsible--auto-height"
+            aria-controls="Product-content-4348"
+          >
+            {{ settings.title_corp }}
+            {%- render 'collapsible-icons' -%}
+          </button>
+          <div id="Product-content-4348" class="collapsible-content collapsible-content--all">
+            <div class="collapsible-content__inner rte">
+              {{ tab_content }}
+            </div>
+          </div>
+        </div>
+      </div>
+      {% if customisedFlag %}
+        {% if product.metafields.my_fields.form_id != blank %}
+          <div class="product-block product-block--tab">
+            <div class="collapsibles-wrapper">
+              <button
+                type="button"
+                class="label collapsible-trigger collapsible-trigger-btn collapsible-trigger-btn--borders collapsible--auto-height"
+                aria-controls="Product-content-111"
+              >
+                {{ settings['How_to__title-corp'] }}
+                {%- render 'collapsible-icons' -%}
+              </button>
+              <div id="Product-content-111" class="collapsible-content collapsible-content--all">
+                <div class="collapsible-content__inner rte">
+                  {{ settings['How_to__content-corp'] }}
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+
+        <div class="product-block product-block--tab">
+          <div class="collapsibles-wrapper">
+            <button
+              type="button"
+              class="label collapsible-trigger collapsible-trigger-btn collapsible-trigger-btn--borders collapsible--auto-height"
+              aria-controls="Product-content-43483"
+            >
+              {{ settings.refund_title_corp }}
+              {%- render 'collapsible-icons' -%}
+            </button>
+            <div id="Product-content-43483" class="collapsible-content collapsible-content--all">
+              <div class="collapsible-content__inner rte">
+                {{ settings.refund_policy_corp }}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {% if product.metafields.my_fields.form_id != blank %}
+          <div class="product-block product-block--tab">
+            <div class="collapsibles-wrapper">
+              <button
+                type="button"
+                class="label collapsible-trigger collapsible-trigger-btn collapsible-trigger-btn--borders collapsible--auto-height"
+                aria-controls="Product-content-3381"
+              >
+                {{ settings.data_privacy__title_corp }}
+                {%- render 'collapsible-icons' -%}
+              </button>
+              <div id="Product-content-3381" class="collapsible-content collapsible-content--all">
+                <div class="collapsible-content__inner rte">
+                  {{ settings.data_privacy_content_corp }}
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endif %}
+      {% else %}
+        <div class="product-block product-block--tab">
+          <div class="collapsibles-wrapper">
+            <button
+              type="button"
+              class="label collapsible-trigger collapsible-trigger-btn collapsible-trigger-btn--borders collapsible--auto-height"
+              aria-controls="Product-content-2239"
+            >
+              {{ settings.refund_title_corp }}
+              {%- render 'collapsible-icons' -%}
+            </button>
+            <div id="Product-content-2239" class="collapsible-content collapsible-content--all">
+              <div class="collapsible-content__inner rte">
+                <!--
+                  <p>Unhappy with what you got? Email us on surprises@oyehappy.com or call us on 9966687654 and we shall dedicate a Happiness Consultant to resolve your issue within 8 working hours.</p>
+                  <p>In case of delay in delivery of your gift due to the delivery pincode being in a COVID-19 containment zone (as updated by respective State/Central Government), no refunds will be made. However, you can swap your order with our eGift surprises.</p>
+                  <p>If you opt for priority shipping and we're unable to deliver on your chosen date, priority shipping charges are fully refunded.</p>
+                -->
+                {{ settings.refund_policy_corp }}
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+{%- endif -%}
+<div class="page-width">
+  {% comment %} pincode check removed from here {% endcomment %}
+</div>
+{% comment %}
+  <!-- <script>
+    document.getElementById('pincode-check__button').addEventListener('click', function(){
+  //     console.log("pincode button clicked");
+      let formData = {
+        pincode: document.getElementById('deliverCheckForm').value, id: this.dataset.wpid, ps: "1"
+      };
+  //     console.log(formData);
+      getPincodeData(formData);
+    });
+    async function getPincodeData(formData){
+      await fetch('https://oh.oyehappy.com/delivery-pincode/', {
+    		method: 'POST',
+    		body: JSON.stringify(formData)
+  	})
+    	.then((response) => response.json())
+      .then((json) => { if( json.value == 1 && json.pr_start_date_range !== undefined ){ document.getElementById('_ws_delivery_dates').innerHTML = '<span>Standard delivery from '+ json.start_date_range + ' to ' + json.end_date_range +'</span><span>Priority delivery on '+ json.pr_start_date_range +' for an extra fee'; } if( json.value == 1 && json.pr_start_date_range === undefined ){ document.getElementById('_ws_delivery_dates').innerHTML = '<span>Standard delivery from '+ json.start_date_range + ' to ' + json.end_date_range +'</span><span>Priority delivery is not available for the selected pincode'; } });
+
+    }
+  </script> -->
+{% endcomment %}
+{% schema %}
+{
+  "name": "Full-width details corp",
+  "class": "product-full-width customproduct-full-width",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "For product lines with long descriptions, we recommend placing your Description and Tabs within this section."
+    },
+    {
+      "type": "checkbox",
+      "id": "max_width",
+      "label": "Optimize for readability",
+      "info": "Applies a maximum width",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    },
+    {
+      "type": "description",
+      "name": "Description",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "is_tab",
+          "label": "Show as tab"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "default": "Text block",
+          "label": "Text"
+        }
+      ]
+    },
+    {
+      "type": "tab",
+      "name": "Tab",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Shipping information"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Tab content",
+          "default": "<p>Use collapsible tabs for more detailed information that will help customers make a purchasing decision.</p><p>Ex: Shipping and return policies, size guides, and other common questions.</p>"
+        },
+        {
+          "type": "page",
+          "id": "page",
+          "label": "Tab content from page"
+        },
+        {
+          "type": "richtext",
+          "id": "content_virtual",
+          "label": "Tab content For Virtual Types Products",
+          "default": "<p>Use collapsible tabs for more detailed information that will help customers make a purchasing decision.</p><p>Ex: Shipping and return policies, size guides, and other common questions.</p>"
+        },
+        {
+          "type": "page",
+          "id": "page_virtual",
+          "label": "Tab content from page For Virtual Types Products"
+        }
+      ]
+    },
+    {
+      "type": "share",
+      "name": "Share on social",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Choose which platforms to share to in global theme settings"
+        }
+      ]
+    },
+    {
+      "type": "separator",
+      "name": "Separator"
+    },
+    {
+      "type": "contact",
+      "name": "Contact form",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "All submissions are sent to the customer email address of your store. [Learn more](https://help.shopify.com/en/manual/using-themes/change-the-layout/add-contact-form#view-contact-form-submissions)."
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Heading",
+          "default": "Ask a question"
+        },
+        {
+          "type": "checkbox",
+          "id": "phone",
+          "label": "Add phone number field"
+        }
+      ]
+    },
+    {
+      "type": "reviews",
+      "name": "Product reviews",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Add reviews by installing the [Shopify Product Reviews app](https://apps.shopify.com/product-reviews) and following our [setup guide](https://archetypethemes.co/blogs/support/installing-shopifys-product-reviews-app)"
+        }
+      ]
+    },
+    {
+      "type": "custom",
+      "name": "HTML",
+      "settings": [
+        {
+          "type": "liquid",
+          "id": "code",
+          "label": "HTML",
+          "default": "<h4>Custom code block</h4><p>Use this advanced section to add custom HTML, app scripts, or liquid.</p>",
+          "info": "Supports Liquid"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

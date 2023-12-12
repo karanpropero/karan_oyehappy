@@ -1,0 +1,318 @@
+{{ 'order-form.css' | asset_url | stylesheet_tag }}
+
+<div class="container customization_form">
+  <form action="" name="{{ product.title }}">
+    <div class="form-header">
+      <span class="form-title" id="formTitleElem">{{ product.title }}</span>
+    </div>
+
+    <div class="form-container">
+      <div class="form-inner">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Sender's name (optional)</label>
+            <div class="form-field">
+              <input
+                type="text"
+                class="form-control"
+                name="properties[Sender_s_name_Only_If_you_d_like_it_mentioned_on_the_certificate]"
+                form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+                maxlength="50"
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Name of the special person</label>
+            <div class="form-field">
+              <input
+                type="text"
+                class="form-control"
+                name="properties[Name_of_the_special_person]"
+                form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+                maxlength="50"
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Email ID where we can send the script for approval</label>
+            <div class="form-field">
+              <input
+                type="email"
+                class="form-control"
+                name="properties[Your_e_mail_address]"
+                form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+              >
+              <i class="fa-thin fa-envelope fa-sm icon"></i>
+            </div>
+          </div>
+        </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Your relationship with the special person</label>
+              <div class="form-field">
+                <input
+                  type="text"
+                  class="form-control"
+                  name="properties[Your_relationship_with_the_special_person_s]"
+                  form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+                  maxlength="50"
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Age of the special person</label>
+              <div class="form-field">
+                <input
+                  type="number"
+                  class="form-control"
+                  name="properties[Age]"
+                  min="1"
+                  form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Occasion</label>
+              <div class="form-field">
+                <input
+                  type="text"
+                  class="form-control"
+                  name="properties[Occasion]"
+                  form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+                  maxlength="50"
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Little about the special person</label>
+              <div class="form-field">
+                <input
+                  type="text"
+                  class="form-control"
+                  name="properties[Little_about_the_special_person]"
+                  form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Things you love the most about the special person</label>
+              <div class="form-field">
+                <input
+                  type="text"
+                  class="form-control"
+                  name="properties[Things_you_love_the_most_about_the_special_person]"
+                  form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Memories between both of you that you can share</label>
+              <div class="form-field">
+                <input
+                  type="text"
+                  class="form-control"
+                  name="properties[Memories_between_both_of_you_that_you_can_share]"
+                  form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Any specific message you would like to convey</label>
+              <div class="form-field">
+                <textarea
+                  type="text"
+                  class="form-control"
+                  name="properties[Any_specific_message_you_would_like_to_convey]"
+                  form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+                  maxlength="80"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Celebrities the special person is fond of/inspired by</label>
+              <div class="form-field">
+                <input
+                  type="text"
+                  class="form-control"
+                  name="properties[Celebrities_the_special_person_is_fond_of_inspired_by]"
+                  form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Please share YouTube links of 3 songs</label>
+              <div class="form-field">
+                <textarea
+                  type="text"
+                  class="form-control"
+                  name="properties[Please_share_YouTube_links_of_3_songs]"
+                  form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Do you want us to add the complete songs or just the first paras?</label>
+              <div class="form-field">
+                <textarea
+                  type="text"
+                  class="form-control"
+                  name="properties[Do_you_want_us_to_add_the_complete_songs_or_just_the_first_paras]"
+                  form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+                ></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Do you want to add your own recording?</label>
+              <div class="form-field">
+                <div class="radio-group">
+                  <input
+                    type="radio"
+                    class="radio"
+                    name="properties[Do_you_want_to_add_your_own_recording]"
+                    value="Yes"
+                    form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+                  >
+                  <span>Yes</span>
+                </div>
+                <div class="radio-group">
+                  <input
+                    type="radio"
+                    class="radio"
+                    name="properties[Do_you_want_to_add_your_own_recording]"
+                    value="No"
+                    form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+                  >
+                  <span>No</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Specify the Time Stamp for the three songs (eg. 0:35 to 1:25)</label>
+              <div class="form-field">
+                <input
+                  type="text"
+                  class="form-control"
+                  name="properties[Specify_the_Time_Stamp_for_the_three_songs_eg_0_35_to_1_25]"
+                  form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+                >
+              </div>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">Please specify to whom should the radio show be sent :</label>
+              <div class="form-field">
+                <div class="radio-group">
+                  <input
+                    type="radio"
+                    class="radio"
+                    name="properties[Please_specify_to_whom_should_the_radio_show_be_sent]"
+                    value="To my Email ID"
+                    form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+                  >
+                  <span>To my Email ID</span>
+                </div>
+                <div class="radio-group">
+                  <input
+                    type="radio"
+                    class="radio"
+                    name="properties[Please_specify_to_whom_should_the_radio_show_be_sent]"
+                    value="To Other Email ID"
+                    form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+                  >
+                  <span>To Other Email ID</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">If you want us to send it to Other Email ID, please mention it here:</label>
+            <div class="form-field">
+              <input
+                type="email"
+                class="form-control"
+                name="properties[If_you_want_us_to_send_it_to_Other_Email_ID_please_mention_it_here]"
+                form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+              >
+              <i class="fa-thin fa-envelope fa-sm icon"></i>
+            </div>
+          </div>
+        </div>
+        
+
+        <div class="form-row hidden">
+          <div class="form-group">
+            <label class="form-label">Item Id</label>
+            <div class="form-field">
+              <input
+                type="text"
+                class="form-control"
+                name="properties[Item Id]"
+                value="{{ product.metafields.custom.item_id }}"
+                form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row hidden">
+          <div class="form-group">
+            <label class="form-label">Record Id</label>
+            <div class="form-field">
+              <input
+                type="text"
+                class="form-control"
+                name="properties[Record Id]"
+                value="{{ product.metafields.custom.record_id }}"
+                form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

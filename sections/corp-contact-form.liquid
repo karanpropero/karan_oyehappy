@@ -1,0 +1,387 @@
+<div id="corp-contact-form"
+  class="index-section newsletter-{{ section.id }} custom_news_corp color-scheme-{{ section.settings.color_scheme }}"
+  style="background-image:url({{ section.settings.bgimage | img_url:'master' }});"
+>
+  <div class="top_image">
+    <img src="https://cdn.shopify.com/s/files/1/0593/5346/4994/files/Ellipse_10.png?v=1661172393">
+  </div>
+  <div class="bottom_image">
+    <img src="https://cdn.shopify.com/s/files/1/0593/5346/4994/files/Ellipse_9.png?v=1661172393">
+  </div>
+  {%- if section.settings.color_scheme != 'none' -%}
+    {%- render 'color-scheme-texture', color_scheme: section.settings.color_scheme -%}
+  {%- endif -%}
+  <div class="page-width{% if section.settings.narrow_column %} page-width--narrow{% endif %} form-narrow-con">
+    {%- if section.settings.title != blank or section.settings.text != blank -%}
+      <div class="section-header text-center">
+        {%- if section.settings.title != blank -%}
+          <h2 class="section-header__title titltcorp">
+            {{ section.settings.title }}
+          </h2>
+        {%- endif -%}
+        {%- if section.settings.text != blank -%}
+          <div class="rte section-header__rte">{{ section.settings.text }}</div>
+        {%- endif -%}
+      </div>
+    {% endif %}
+
+    <div class="form-vertical contact-corp-form">
+      {%- assign form_id = 'contact-' | append: section.id -%}
+      {%- form 'contact', id: form_id -%}
+        {%- if form.posted_successfully? -%}
+          <p class="note note--success">
+            {{ 'contact.form.post_success' | t }}
+          </p>
+        {%- endif -%}
+
+        {{ form.errors | default_errors }}
+
+        <div class="grid grid--small">
+          <div class="grid__item medium-up--one-half">
+            <!-- <label for="ContactFormName-{{ section.id }}">{{ 'contact.form.name' | t }}</label> -->
+            <input
+              type="text"
+              id="ContactFormName-{{ section.id }}"
+              class="input-full"
+              name="contact[name]"
+              placeholder="Your name"
+              autocapitalize="words"
+              value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
+            >
+          </div>
+          <div class="grid__item medium-up--one-half">
+            <input
+              type="text"
+              id="ContactFormcompany-{{ section.id }}"
+              class="input-full"
+              name="contact[company]"
+              placeholder="Your company"
+              autocapitalize="words"
+              value=""
+            >
+          </div>
+          <!--
+            <div class="grid__item medium-up--one-half">
+
+            </div>
+          -->
+        </div>
+        <div class="grid grid--small">
+          <div class="grid__item medium-up--one-half">
+            <input
+              type="email"
+              id="ContactFormEmail-{{ section.id }}"
+              class="input-full"
+              name="contact[email]"
+              placeholder="Your email address"
+              autocorrect="off"
+              autocapitalize="off"
+              value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+            >
+          </div>
+          <div class="grid__item medium-up--one-half">
+            <input
+              type="text"
+              id="ContactFormoccasion-{{ section.id }}"
+              class="input-full"
+              name="contact[Occasion]"
+              placeholder="Occasion"
+              value=""
+            >
+          </div>
+        </div>
+        <div class="grid grid--small">
+          <div class="grid__item medium-up--one-half">
+            {%- if section.settings.show_phone -%}
+              <!-- <label for="ContactFormPhone-{{ section.id }}">{{ 'contact.form.phone' | t }}</label> -->
+              <input
+                type="tel"
+                id="ContactFormPhone-{{ section.id }}"
+                class="input-full"
+                name="contact[phone]"
+                placeholder="Phone"
+                pattern="[0-9\-]*"
+                value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
+              >
+            {%- endif -%}
+
+            <input
+              type="number"
+              id="ContactFormquantity-{{ section.id }}"
+              class="input-full custom_select_corp"
+              name="contact[Quantity]"
+              placeholder="Gift quantity required"
+            >
+
+            <input
+              type="date"
+              style="color:#a6a6a6"
+              id="ContactFormOccasiondate-{{ section.id }}"
+              class="input-full occasiondate"
+              name="contact[Occasion_date]"
+              placeholder="Tentative delivery date"
+              value=""
+            >
+          </div>
+          <div class="grid__item medium-up--one-half">
+            <textarea
+              rows="3"
+              id="ContactFormMessage-{{ section.id }}"
+              placeholder="Any other information to help curate your requirement"
+              class="input-full corp_full"
+              name="contact[body]"
+            >{% if form.body %}{{ form.body }}{% endif %}</textarea>
+            <button type="submit" class="btn submit_btnofcorp desktopbtn_submit">Submit</button>
+          </div>
+        </div>
+
+        <div class="grid grid--small">
+          <div class="grid__item medium-up--one-half"></div>
+        </div>
+
+        <button type="submit" class="btn submit_btnofcorp mobilebtn_submit">Submit</button>
+      {%- endform -%}
+    </div>
+
+    <div class="corp_or_s">or</div>
+    <div class="section--divider" style="padding-top: 0px;"></div>
+  </div>
+
+  <div class="page-width{% if section.settings.narrow_column %} page-width--narrow{% endif %} form-narrow-con">
+    <div>
+      <div class="btncorpcall">
+        <img src="https://cdn.shopify.com/s/files/1/0593/5346/4994/files/Group_365_1.png?v=1661250199">
+
+        <button class="corp_btn">
+          <a href="tel:+918143625575">Call us on 8143625575</a>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+    .corp_full{
+      margin-bottom: 12px!important;
+    }
+    h2.section-header__title.titltcorp {
+      margin-bottom: 0px;
+  }
+    .occasiondate {
+      margin-bottom: 20px !important;
+  }
+    button.btn.submit_btnofcorp {
+      width: 100%;
+      background-color: #EC5459;
+  }
+    .input-full.custom_select_corp {
+      background-color: #fff;
+      color: #a6a6a6;
+  }
+    .custom_news_corp {
+      background-position: top;
+      background-size: cover;
+  }
+    .mobilebtn_submit{
+      display:none  !important;
+    }
+
+  .page-width.page-width--narrow.form-narrow-con {
+      max-width: 800px;
+  }
+  .top_image {
+      position: absolute;
+      top: 0;
+      left: 0;
+     display:none;
+  }
+    .bottom_image {
+      position: absolute;
+      bottom: -5px;
+      right: 0;
+      display:none;
+  }
+    h2.section-header__title.titltcorp {
+      margin-bottom: 0px;
+      font-size: calc(var(--typeHeaderSize)*.85);
+      color: #555;
+  }
+
+  .btncorpcall {
+      text-align: center;
+      margin-top: 40px;
+      max-width: 320px;
+      margin: auto;
+      margin-top: 40px;
+      position: relative;
+      display: flex;
+      align-items: center;
+  }
+    .btncorpcall img {
+      position: absolute;
+      z-index: 9;
+      width: 25%;
+  }
+
+    .btncorpcall img {
+      width: 25%;
+      left: -13px;
+      background: linear-gradient(90deg, #FFC0CB 50%);
+      background: linear-gradient(90deg, #F0F0F0 50%, #fff0 50%);
+  }
+  button.corp_btn {
+      background-color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: auto;
+        padding: 10px 43px 10px 64px;
+      border: 2px solid #07A89E;
+      color: #07A89E;
+      font-weight: 600;
+      font-size: 16px;
+      position: relative;
+      padding: p;
+      width: 100%;
+        border-radius: 5px;
+      border-left: none;
+
+  }
+    button.corp_btn img {
+      position: absolute;
+      left: -40px;
+      width: 20%
+  }
+    .btncorpcall img {
+      position: absolute;
+      z-index: 9;
+      width: 18%;
+      left: -20px;
+  }
+  .corp_or_s {
+      text-align: center;
+      padding: 0px 10px;
+      background-color: #f1f1f1;
+      margin: auto;
+      width: auto;
+      margin-bottom: -10px !important;
+  }
+    .form-vertical.contact-corp-form input, .form-vertical.contact-corp-form select {
+      margin-bottom: 15px;
+      border-radius: 5px;
+  }
+    textarea {
+      border-radius: 5px;
+  }
+  @media screen and (max-width: 769px){
+    .mobilebtn_submit{
+      display:block  !important;
+    }
+      .desktopbtn_submit{
+
+        display:none !important;
+      }
+      .occasiondate {
+      margin-bottom: 30px !important;
+  }
+      .input-full {
+      margin-bottom: 5px !important;
+  }
+    button.btn.submit_btnofcorp {
+      margin-top: 20px;
+  }
+
+
+    }
+    @media screen and (max-width: 375px){
+  button.corp_btn {
+      max-width: 100%;
+      width: 100%;
+      padding: 10px;
+      padding-left: 40px;
+  }
+      .btncorpcall img {
+      width: 23%;
+      left: -13px;
+  }
+  }
+    @media screen and (max-width: 350px){
+
+    .btncorpcall {
+      max-width: 100% !important;
+      margin-left: 5px;
+  }
+      button.corp_btn {
+      padding: 15px;
+      padding-left: 40px;
+  }
+    }
+    h2.section-header__title.titltcorp {
+      color: #212529;
+  }
+</style>
+{% schema %}
+{
+  "name": "Contact form corp",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "bgimage",
+      "label": "Background Image"
+    },
+    {
+      "type": "paragraph",
+      "content": "All submissions are sent to the customer email address of your store. [Learn more](https://help.shopify.com/en/manual/using-themes/change-the-layout/add-contact-form#view-contact-form-submissions)."
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Contact us"
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_phone",
+      "label": "Add phone number field"
+    },
+    {
+      "type": "checkbox",
+      "id": "narrow_column",
+      "label": "Narrow column",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "1",
+      "options": [
+        {
+          "value": "none",
+          "label": "None"
+        },
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        },
+        {
+          "value": "3",
+          "label": "3"
+        }
+      ]
+    }
+  ],
+  "presets": [{
+    "name": "Contact form corp"
+  }]
+}
+{% endschema %}

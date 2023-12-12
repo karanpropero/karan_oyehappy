@@ -1,0 +1,243 @@
+<div class="custom_contacts index-section newsletter-{{ section.id }} color-scheme-{{ section.settings.color_scheme }}">
+  {%- if section.settings.color_scheme != 'none' -%}
+    {%- render 'color-scheme-texture', color_scheme: section.settings.color_scheme -%}
+  {%- endif -%}
+  <div class="page-width{% if section.settings.narrow_column %} page-width--narrow{% endif %}">
+    {%- if section.settings.title != blank or section.settings.text != blank -%}
+      <div class="section-header text-center">
+        {%- if section.settings.title != blank -%}
+          <h2 class="section-header__title">
+            {{ section.settings.title }}
+          </h2>
+        {%- endif -%}
+        {%- if section.settings.text != blank -%}
+          <div class="rte section-header__rte">{{ section.settings.text }}</div>
+        {%- endif -%}
+      </div>
+    {% endif %}
+
+    <div class="form-vertical">
+      {%- assign form_id = 'contact-' | append: section.id -%}
+      {%- form 'contact', id: form_id -%}
+
+        {%- if form.posted_successfully? -%}
+          <p class="note note--success">
+            {{ 'contact.form.post_success' | t }}
+          </p>
+        {%- endif -%}
+
+        {{ form.errors | default_errors }}
+
+      <div class="grid__items custom_select">
+          <label for="Contactlist-{{ section.id }}">I want to... </label>
+     	<select id="Contactlist" name="contact[want]" class="input-full">
+           <option value="Join the team- bhavya@oyehappy.com">Join the team</option>
+           <option value="Collaborate- varun@oyehappy.com">Collaborate for products</option>
+           <option value="Share a query- bhaskar@oyehappy.com">Submit a gift idea</option>
+           <option value="Submit an idea- varun@oyehappy.com">Talk to the founders</option>
+           <option value="Talk to the founders- bhavya@oyehappy.com">Plan corporate gifts</option>
+      </select>
+       </div>
+          
+          <div class="grid__item~ grid_content">
+            <label for="ContactFormName-{{ section.id }}">{{ 'contact.form.name' | t }}</label>
+            <input type="text" id="ContactFormName-{{ section.id }}" class="input-full" name="contact[name]" autocapitalize="words" value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}">
+          </div>
+          
+         {%- if section.settings.show_phone -%}
+           <div class="grid__item~ grid_content">
+          <label for="ContactFormPhone-{{ section.id }}">{{ 'contact.form.phone' | t }}</label>
+          <input type="tel" id="ContactFormPhone-{{ section.id }}" class="input-full" name="contact[phone]" pattern="[0-9\-]*" value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}">
+           </div>
+             {%- endif -%}
+        
+          <div class="grid__item~ grid_content">
+            <label for="ContactFormEmail-{{ section.id }}">{{ 'contact.form.email' | t }}</label>
+            <input type="email" id="ContactFormEmail-{{ section.id }}" class="input-full" name="contact[email]" autocorrect="off" autocapitalize="off" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}">
+          </div>
+
+      
+       <div class="grid__item~ custom_message grid_content">
+        <label for="ContactFormMessage-{{ section.id }}">{{ 'contact.form.message' | t }}</label>
+        <textarea rows="5" id="ContactFormMessage-{{ section.id }}" class="input-full" name="contact[body]">{% if form.body %}{{ form.body }}{% endif %}</textarea>
+        </div>
+       <div class="grid__items custom_select grid_content">
+        <button type="submit" class="btn submit_contact">
+          {{ 'contact.form.send' | t }}
+        </button>
+       </div>
+        {% comment %}
+          Remove the following three lines of code to remove the note
+          about being protected by Google's reCAPTCHA service.
+          By removing it, the small reCAPTCHA widget will appear in the
+          bottom right corner of the page.
+
+        {{ 'shopify.online_store.spam_detection.disclaimer_html' | t }}
+{% endcomment %}
+      {%- endform -%}
+    </div>
+  </div>
+</div>
+<style>
+  @media only screen and (max-width: 990px){
+  .custom_select{
+    max-width: 60%;
+/*     padding-left: 16px!important; */
+  }
+ 
+  .custom_contacts{
+    padding-top: 0px!important;
+     padding-bottom: 0px!important;
+  }
+ .contact-form .grid_content{
+max-width: 80%;
+ }
+  .custom_message{
+  width: 100%;
+    max-width: 100%!important;
+/*     padding-left: 16px; */
+  }
+  
+  .form-vertical{
+    margin-bottom: 0px;
+  }
+  .custom_index{
+    padding-top: 0px!important;
+  }
+  .theme-block{
+    padding-left: 16px;
+  }
+    .custom_select, .grid_content{
+/*     padding-left: 16px; */
+  }
+     .custom_contacts .form-vertical input{
+    margin-bottom: 15px;
+     }
+    .custom_select select{
+     margin-bottom: 15px;
+    }
+  }
+   .custom_select select{
+    background-color: #f2f2f2;
+   padding: 3px 10px!important;
+  }
+  .custom_contacts .form-vertical input{
+    background: #f2f2f2;
+   padding: 3px 10px!important;
+  }
+   @media only screen and (min-width: 990px){
+      .custom_select{
+     width: 50%;
+    padding-left: 22px;
+  }
+  .contact-form .grid_content {
+    max-width: 80%;
+}
+     .custom_contacts .form-vertical input{
+    margin-bottom: 15px;
+     }
+    .custom_select select{
+     margin-bottom: 15px;
+    }
+    
+     .custom_select, .grid_content{
+    padding-left: 0px;
+  }
+    .custom_contacts{
+margin: auto!important;
+    width: 35%;
+    }
+   }
+  
+  .custom_index{
+    padding-top: 0px!important;
+  }
+  .custom_contacts{
+    padding-top: 0px!important;
+     padding-bottom: 0px!important;
+  }
+  .submit_contact{
+ margin-bottom: 40px!important;
+  }
+   .grid_content label{
+       margin-bottom: 0px;
+     }
+  @media only screen and (max-width: 768px){
+   .custom_contacts .page-width--narrow{
+        margin-left: 0px;
+    margin-right: auto;
+    padding-left: 33px;
+    }
+  }
+  @media (min-width: 769px) and (max-width: 990px){
+   .custom_contacts .page-width--narrow{
+     max-width: 100%!important;
+   } 
+    .contact-form{
+      padding-left: 16px;
+    }
+  }
+  .submit_contact{
+    background: #ec5459!important;
+  }
+</style>
+{% schema %}
+  {
+    "name": "Contact form",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "All submissions are sent to the customer email address of your store. Learn more."
+      },
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Title",
+        "default": "Contact us"
+      },
+      {
+        "type": "richtext",
+        "id": "text",
+        "label": "Text"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_phone",
+        "label": "Add phone number field"
+      },
+      {
+        "type": "checkbox",
+        "id": "narrow_column",
+        "label": "Narrow column",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "color_scheme",
+        "label": "Color scheme",
+        "default": "1",
+        "options": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "1",
+            "label": "1"
+          },
+          {
+            "value": "2",
+            "label": "2"
+          },
+          {
+            "value": "3",
+            "label": "3"
+          }
+        ]
+      }
+    ],
+    "presets": [{
+      "name": "Contact form"
+    }]
+  }
+{% endschema %}

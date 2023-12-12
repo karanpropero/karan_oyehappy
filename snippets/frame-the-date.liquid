@@ -1,0 +1,108 @@
+{{ 'order-form.css' | asset_url | stylesheet_tag }}
+
+<div class="container customization_form">
+  <form action="" name="{{ product.title }}">
+    <div class="form-header">
+      <span class="form-title" id="formTitleElem">{{ product.title }}</span>
+    </div>
+
+    <div class="form-container">
+      <div class="form-inner">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Date of the special occasion</label>
+            <div class="form-field">
+              <input
+                type="date"
+                class="form-control"
+                name="properties[Date_of_the_special_occasion]"
+                form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+              >
+              <span class="label-text">(DD/MM/YYYY)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Choose the occasion</label>
+            <div class="form-field">
+              <select
+                class="form-control"
+                id="dropdown"
+                name="properties[Choose_an_option_of_occasion]"
+                form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+              >
+                <option value=""></option>
+                <option value="Happy Birthday">Happy Birthday</option>
+                <option value="Happy Anniversary">Happy Anniversary</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">If Other, please share your own message:</label>
+            <div class="form-field">
+              <textarea
+                type="text"
+                class="form-control"
+                name="properties[If_Other_please_share_your_own_message]"
+                form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+                maxlength="25"
+              ></textarea>
+              <span class="label-text">(Max. 5 words)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Your e-mail address (for order communication)</label>
+            <div class="form-field">
+              <input
+                type="email"
+                class="form-control"
+                name="properties[Your_e_mail_address]"
+                form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+              >
+              <i class="fa-thin fa-envelope fa-sm icon"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row hidden">
+          <div class="form-group">
+            <label class="form-label">Item Id</label>
+            <div class="form-field">
+              <input
+                type="text"
+                class="form-control"
+                name="properties[Item Id]"
+                value="{{ product.metafields.custom.item_id }}"
+                form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row hidden">
+          <div class="form-group">
+            <label class="form-label">Record Id</label>
+            <div class="form-field">
+              <input
+                type="text"
+                class="form-control"
+                name="properties[Record Id]"
+                value="{{ product.metafields.custom.record_id }}"
+                form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

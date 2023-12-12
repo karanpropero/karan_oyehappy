@@ -1,0 +1,109 @@
+{%- if product.metafields.productinfo.faq.value != blank -%}
+<div class="page-width">
+
+  {%- if section.settings.title != blank -%}
+    <header class="section-header">
+      <h2 class="h3 section-header__title">
+        {{ section.settings.title | escape }}
+      </h2>
+    </header>
+  {%- endif -%}
+  {% assign qas = product.metafields.productinfo.faq %} 
+  {%- if product.metafields.productinfo.faq.value != blank -%}
+
+    {% for qa in qas.value %}
+        
+            <div itemscope itemprop="mainEntity" itemtype="https://schema.org/Question" class="Collapsible">
+              <button type="button"
+                class="label collapsible-trigger collapsible-trigger-btn collapsible-trigger-btn--borders collapsible--auto-height"
+                aria-controls="FAQ-content-{{ forloop.index }}">
+                <span class="collapsible-trigger__layout">
+                  <span>
+                    <span itemprop="name">{{ qa.question }}</span>
+                  </span>
+                  <span class="Collapsible__Plus">
+                </span>
+                
+                </span>
+              </button>
+              <div id="FAQ-content-{{ forloop.index }}" class="collapsible-content collapsible-content--all" itemscope itemprop="acceptedAnswer" itemtype="https://schema.org/Answer">
+                <div class="collapsible-content__inner rte" itemprop="text">
+                    {{ qa.answer }}
+                </div>
+              </div>
+            </div>
+     
+    {% endfor %}
+  {%- endif -%}
+</div>
+{% endif %}
+<style>
+  .custom-faq .page-width {
+    padding:30px  var(--pageWidthPadding) 30px;
+    border-bottom: solid 1px #e8e8e1;
+}
+.custom-faq .Collapsible{
+  border-bottom:none;  
+}
+.custom-faq .Collapsible:last-child{
+    border-bottom:solid 1px var(--colorBorder);
+}
+   .custom-faq .collapsible-trigger-btn--borders,
+   .custom-faq .collapsible-content__inner{
+    {% comment %} border: 1px solid; {% endcomment %}
+    padding: 15px 20px;
+    }
+    
+  .custom-faq .collapsible-content--all.is-open{
+  border-bottom:none;
+  }
+    .Collapsible__Plus::before, .Collapsible__Plus::after {
+        position: absolute;
+        content: "";
+        top: 50%;
+        {% comment %} left: 97%; {% endcomment %}
+        transform: translate(-50%, -50%) rotate(-90deg);
+        background-color: currentColor;
+        transition: transform 0.4s ease-in-out, opacity 0.4s ease-in-out;
+    }
+    .Collapsible__Plus::before {
+        width: 11px;
+        height: 1px;
+        opacity: 1;
+    }
+    .Collapsible__Plus::after {
+        width: 1px;
+        height: 11px;
+    }
+    .collapsible-trigger-btn[aria-expanded=true] .Collapsible__Plus::before {
+        opacity: 0;
+    }
+    .collapsible-trigger-btn[aria-expanded=true] .Collapsible__Plus::before,
+    .collapsible-trigger-btn[aria-expanded=true] .Collapsible__Plus::after {
+        transform: translate(-50%, -50%) rotate(90deg);
+    }   @media  (max-width:641px) {
+      .custom-faq .collapsible-trigger-btn--borders,
+   .custom-faq .collapsible-content__inner{
+    padding: 15px 10px;
+    }
+    }
+  
+</style>
+{% schema %}
+{
+    "name": "FAQ",
+    "class": "custom-faq",
+    "settings": [{
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "FAQs"
+    }],
+    "presets": [{
+        "name": "custom-faq"
+
+    }],
+    "templates": ["product"]
+
+}
+{% endschema %}

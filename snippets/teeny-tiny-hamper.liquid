@@ -1,0 +1,73 @@
+{{ 'order-form.css' | asset_url | stylesheet_tag }}
+
+<div class="container customization_form">
+  <form action="" name="{{ product.title }}">
+    <div class="form-header">
+      <span class="form-title" id="formTitleElem">{{ product.title }}</span>
+    </div>
+
+    <div class="form-container">
+      <div class="form-inner">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Message for the special person (no emojis, please)</label>
+            <div class="form-field">
+              <textarea
+                type="text"
+                class="form-control"
+                name="properties[Please_share_your_message_if_any_and_please_do_not_use_emojis_in_the_message]"
+                form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+                maxlength="255"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Your e-mail address</label>
+            <div class="form-field">
+              <input
+                type="email"
+                class="form-control"
+                name="properties[Your_e_mail_address]"
+                form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+              >
+              <i class="fa-thin fa-envelope fa-sm icon"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row hidden">
+          <div class="form-group">
+            <label class="form-label">Item Id</label>
+            <div class="form-field">
+              <input
+                type="text"
+                class="form-control"
+                name="properties[Item Id]"
+                value="{{ product.metafields.custom.item_id }}"
+                form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row hidden">
+          <div class="form-group">
+            <label class="form-label">Record Id</label>
+            <div class="form-field">
+              <input
+                type="text"
+                class="form-control"
+                name="properties[Record Id]"
+                value="{{ product.metafields.custom.record_id }}"
+                form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

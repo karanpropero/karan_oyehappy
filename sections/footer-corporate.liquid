@@ -1,0 +1,426 @@
+{%- if template == 'cart' -%}
+{%- else -%}
+{%- if section.settings.show_newsletter -%}
+  <div class="footer__section footer__section--border footer__subscribe">
+    <div class="page-width">
+      <div class="footer__newsletter">
+        {%- if section.settings.newsletter_richtext != blank -%}
+          <div class="footer__subscribe rte rte--nomargin">
+            {{ section.settings.newsletter_richtext }}
+          </div>
+        {%- endif -%}
+        {%- render 'newsletter-form', section_id: section.id, snippet_context: 'footer' -%}
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+{%- endif -%}
+
+{% comment %}
+  Main navigation is copied here with JS for mobile users
+{% endcomment %}
+{%- if section.settings.footer_main_menu -%}
+  <div id="FooterMobileNavWrap" class="footer__section footer__section--border medium-up--hide hide">
+    <div id="FooterMobileNav" class="page-width"></div>
+  </div>
+{%- endif -%}
+
+<footer class="site-footer" data-section-id="{{ section.id }}" data-section-type="footer-section">
+  {%- if template == 'cart' -%}
+  <div id="FooterMenus" class="footer__section footer__section--menus custom_mmm">
+    <div class="page-width">
+  		<div class="footer_blocks">
+        <div class="footer__contact_payment template-cart">
+          <div>
+            <h6 class="secure-txn">All Transactions are 100% Secure</h6>
+            <ul class="nav">
+              <li class="nav-item"><i class="sprite sprite-master-card"></i></li>
+              <li class="nav-item"><i class="sprite sprite-visa"></i></li>
+              <li class="nav-item"><i class="sprite sprite-paytm"></i></li>
+              <li class="nav-item"><i class="sprite sprite-rupay"></i></li>
+              <li class="nav-item"><i class="sprite sprite-upi"><img src="{{ 'upi.png' | file_url }}" alt="UPI Payment" /></i></li>
+<!--               <li class="nav-item"><i class="sprite sprite-gpay"><img src="{{ 'google-pay.png' | file_url }}" alt="Google Pay" /></i></li> -->
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {%- else -%}
+  <div id="FooterMenus" class="footer__section footer__section--menus custom_mmm">
+     
+    <div class="page-width">
+     
+
+      <div class="footer__blocks footer__follow">
+        <div class="text-center">
+          <h5 class="sec__title">Follow Us</h5>
+          <div>
+            <ul>
+              <li><a href="https://www.facebook.com/oyehappy" target="_blank"><i class="sprite sprite-fb-icon"></i></a></li>
+              <li><a href="https://www.instagram.com/oye_happy/" target="_blank"><i class="sprite sprite-instagram"></i></a></li>
+              <li><a href="https://www.youtube.com/channel/UCAkPOySZz5wxX9uZ8Q0oGhQ" target="_blank"><img src="{{ 'youtube.png' | file_url }}" alt="" /></a></li>
+              <li><a href="https://in.pinterest.com/oyehappy0414/" target="_blank"><img src="{{ 'pintrest.png' | file_url }}" alt="" /></a></li>
+            </ul>
+          </div>  
+        </div>
+      </div>
+     {% unless template contains 'contact' %}
+      <div class="footer_blocks">
+       <div class="footer__contact_payment call-us contact_us">{{ section.settings.contact_text }}</div>
+      </div>
+      {% endunless %}
+    {% comment %} custom code {% endcomment %}
+      <div class="footer_blocks corporate_footer_content">
+<div class="footer__accordion theme-accordion">
+  {{ pages[section.settings.footer-content-corp].content }}
+</div>
+      </div>
+      <div class="footer__blocks">
+        <div class="footer__accordion theme-accordion">
+    		<a href="#" data-target="footer_navigation" class="accordion-title">
+      {%- for block in section.blocks -%}
+              	{{ block.settings.heading_nav }}
+        {% endfor %}
+              	{% comment %} <img class="__icon" src="{{ 'red-drop-down-icon.png' | file_url }}" />
+            	<span class="icon">
+            		<span class="item-icon-close"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"><path d="M0 7.33l2.829-2.83 9.175 9.339 9.167-9.339 2.829 2.83-11.996 12.17z"/></svg></span>
+            		<span class="item-icon-open"><svg xmlns="http://www.w3.org/2000/svg" width="17" height="17" viewBox="0 0 24 24"><path d="M0 16.67l2.829 2.83 9.175-9.339 9.167 9.339 2.829-2.83-11.996-12.17z"/></svg></span>
+        		</span>
+              {% endcomment %}
+    		</a>
+          <div id="footer_navigation" class="accordion-body">
+        {%- for block in section.blocks -%}
+          <div {{ block.shopify_attributes }} class="footer__block" data-type="{{ block.type }}">
+            {%- liquid
+              case block.type
+                when 'menu'
+                  render 'footer-menu', block: block
+                when 'payment'
+                  render 'footer-payments', block: block
+                when 'contact'
+                  render 'footer-contact', block: block
+              endcase
+            -%}
+          </div>
+        {%- endfor -%}
+          </div>
+        </div>
+      </div>
+      
+      <div class="footer_blocks">
+        <div class="footer__contact_payment">
+          <div class="call-us">
+            <div class="phone_num">{{ section.settings.phone-text }}</div>
+           
+          </div>
+          <div>
+            <ul class="nav">
+              <li class="nav-item"><i class="sprite sprite-master-card"></i></li>
+              <li class="nav-item"><i class="sprite sprite-visa"></i></li>
+              <li class="nav-item"><i class="sprite sprite-paytm"></i></li>
+              <li class="nav-item"><i class="sprite sprite-rupay"></i></li>
+              <li class="nav-item"><i class="sprite sprite-upi"><img src="{{ 'upi.png' | file_url }}" alt="UPI Payment" /></i></li>
+<!--               <li class="nav-item"><i class="sprite sprite-gpay"><img src="{{ 'google-pay.png' | file_url }}" alt="Google Pay" /></i></li> -->
+            </ul>
+          </div>
+        </div>
+      </div>  
+    </div>
+  </div>
+  {%- endif -%}
+  <div class="footer__section footer__bottom">
+    <div class="page-width text-center small--text-left">
+      <div class="footer__base-links">
+        {%- if section.settings.show_copyright -%}
+          <span>
+            &copy; {{ 'now' | date: '%Y' }} {{ shop.name }}
+            {%- if section.settings.copyright_text != blank -%}
+              {{ section.settings.copyright_text }}
+            {%- endif -%}
+          </span>
+        {%- endif -%}
+        {%- if linklists[section.settings.policies_menu].links.size > 0 -%}
+          {%- for link in linklists[section.settings.policies_menu].links -%}
+            <a href="{{ link.url }}">{{ link.title }}</a>
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+    </div>
+  </div>
+</footer>
+<script>
+  document.addEventListener('page:loaded', function() {
+    // Page has loaded and theme assets are ready
+    try{
+      if(document.getElementsByClassName('theme-accordion').length > 0){
+        let _accordionTitles = document.getElementsByClassName('accordion-title');
+        
+        Array.prototype.forEach.call(_accordionTitles, function(_accTitle) {
+          // console.info(_acctitle.getAttribute('data-target'));
+          _accTitle.addEventListener('click', fnListenClick );
+        });
+      }
+      
+      function fnListenClick(event){
+        event.preventDefault();
+        event.stopPropagation();
+        event.target.classList.toggle('item-active');
+        if( document.getElementById(event.target.getAttribute('data-target')).classList.contains('display-flex') ){
+          document.getElementById(event.target.getAttribute('data-target')).classList.remove('display-flex');
+        }else{
+          document.getElementById(event.target.getAttribute('data-target')).classList.add('display-flex');
+        }
+      }
+      
+      if(document.getElementsByClassName('site-header__search-container').length > 0){
+          window.addEventListener('click', function(e){
+            if(document.getElementsByClassName('site-header__search-container')[0].contains(e.target)){
+            }else{
+              document.getElementsByClassName('site-header__search-container')[0].classList.remove('is-active');
+            }
+          });
+        }
+      
+      if( document.getElementsByClassName('site-header__search-form').length > 0 ){
+        document.getElementsByClassName('site-header__search-form')[0].addEventListener("submit", function(evnt){ 
+          if( document.getElementsByClassName('site-header__search-input')[0].value == '' ){
+            evnt.preventDefault();
+          }
+        });
+      }
+    }catch(e){
+      console.info("Oye Happy Giftcom Pvt. Ltd. - " + e);
+    }
+
+    try{
+        setTimeout(function(){
+            if(document.getElementsByClassName('spr-badge').length > 0){
+                let _reviewBadges = document.getElementsByClassName('spr-badge');
+                Array.prototype.forEach.call(_reviewBadges, function(_reviewBadge) {
+                    let _rating = _reviewBadge.getAttribute('data-rating');
+                    for ( let i = 0; i < _reviewBadge.childNodes.length; i++ ){
+                        if( _reviewBadge.childNodes[i].className == 'spr-badge-caption' && _rating !== '0.0' ){
+                            _reviewBadge.childNodes[i].innerHTML = parseFloat(_rating).toFixed(2);
+                        }
+                    }
+                });
+            }
+        }, 3000 );        
+    }catch(e){
+        console.info("Oye Happy Giftcom Pvt. Ltd. - " + e);
+    }
+
+    try{
+        {% comment %} for single product page {% endcomment %}
+        if(document.getElementsByClassName('spr-stars').length > 0){
+            let _reviewStars = document.getElementsByClassName('spr-stars');
+            document.getElementsByClassName('underlined-link')[0].innerHTML = _reviewStars[0].childNodes[1].getAttribute('aria-label').substr(0, 3);
+        }
+    }catch(e){
+        console.info("");
+    }
+    
+    try{
+      document.addEventListener("click", function(evt) {
+        var flyoutElement = document.getElementById('oyehappy_collection_filter'),
+            targetElement = evt.target;  // clicked element
+
+        do {
+            if (targetElement == flyoutElement) {
+                // This is a click inside. Do nothing, just return.
+                console.log("Clicked inside!");
+                return;
+            }
+            // Go up the DOM
+            targetElement = targetElement.parentNode;
+        } while (targetElement);
+
+        // This is a click outside.
+        console.log("Clicked outside!");
+        document.getElementById('CollectionInlineFilterWrap').children[0].classList.remove('is-active');
+        document.getElementsByClassName('collection-filter__btn')[0].classList.remove('is-active');
+    });
+    }catch(e){
+      console.info("Oye Happy Giftcom Pvt. Ltd. - " + e);
+    }
+  });
+</script>
+<style>
+  .phone_num p{
+    margin-bottom: 0px;
+  }
+</style>
+{% schema %}
+  {
+    "name": "Footer Corprate",
+    "max_blocks": 12,
+    "settings": [
+      {
+        "type": "header",
+        "content": "Newsletter"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_newsletter",
+        "label": "Show newsletter signup",
+        "info": "Customers who subscribe will have their email address added to the 'accepts marketing' [customer list](/admin/customers?query=&accepts_marketing=1).",
+        "default": true
+      },
+      {
+        "type": "richtext",
+        "id": "newsletter_richtext",
+        "label": "Text",
+        "default": "<p>Subscribe today to hear first about our sales</p>"
+      },
+      {
+        "type": "header",
+        "content": "Additional footer content"
+      },
+      {
+        "type": "checkbox",
+        "id": "footer_main_menu",
+        "label": "Repeat main menu on mobile",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_copyright",
+        "label": "Show copyright"
+      },
+      {
+        "type": "text",
+        "id": "copyright_text",
+        "label": "Additional copyright text"
+      },
+      {
+        "type": "link_list",
+        "id": "policies_menu",
+        "label": "Policies menu",
+        "info": "This menu will only show top-level links"
+      },
+       {
+       "type": "richtext",
+        "id": "contact_text",
+        "label": "Contact Us" 
+      },
+      {
+       "type": "page",
+        "id": "footer-content-corp",
+        "label": "footer content page"  
+      },
+      {
+       "type": "richtext",
+        "id": "phone-text",
+        "label": "Phone" 
+      }
+    ],
+    "blocks": [
+      {
+        "type": "payment",
+        "name": "Payments and localization",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "checkbox",
+            "id": "show_payment_icons",
+            "label": "Show payment icons",
+            "default": true
+          },
+          {
+            "type": "checkbox",
+            "id": "show_locale_selector",
+            "label": "Show language selector",
+            "info": "To add a language, go to your [language settings.](/admin/settings/languages)",
+            "default": true
+          },
+          {
+            "type": "checkbox",
+            "id": "show_currency_selector",
+            "label": "Show currency selector",
+            "info": "To add a currency, go to your [currency settings.](/admin/settings/payments)",
+            "default": true
+          }
+        ]
+      },
+      {
+        "type": "menu",
+        "name": "Navigation",
+        "settings": [
+          {
+           "type": "text",
+            "id": "heading_nav",
+            "label": "Title",
+            "info": "Menu title" 
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "info": "Defaults to menu title"
+          },
+          {
+            "type": "link_list",
+            "id": "menu",
+            "label": "Choose a menu",
+            "default": "footer",
+            "info": "This menu will only show top-level links"
+          },
+          {
+            "type": "checkbox",
+            "id": "enable_account_link",
+            "label": "Add 'My account' link if customer accounts enabled"
+          }
+        ]
+      },
+      {
+        "type": "contact",
+        "name": "Contact and social",
+        "settings": [
+          {
+            "type": "header",
+            "content": "Contact"
+          },
+          {
+            "type": "text",
+            "id": "phone",
+            "label": "Phone number"
+          },
+          {
+            "type": "page",
+            "id": "contact",
+            "label": "Contact page"
+          },
+          {
+            "type": "page",
+            "id": "chat",
+            "label": "Chat link"
+          },
+          {
+            "type": "header",
+            "content": "Social"
+          },
+          {
+            "type": "checkbox",
+            "id": "enable_social",
+            "label": "Show social accounts",
+            "default": true
+          }
+        ]
+      }
+    ],
+    "default": {
+      "settings": {},
+      "blocks": [
+        {
+          "type": "menu",
+          "settings": {}
+        },
+        {
+          "type": "payment",
+          "settings": {}
+        }
+      ]
+    }
+  }
+{% endschema %}

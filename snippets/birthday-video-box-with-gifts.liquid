@@ -1,0 +1,162 @@
+{{ 'order-form.css' | asset_url | stylesheet_tag }}
+
+<div class="container customization_form">
+  <form action="" name="{{ product.title }}">
+    <div class="form-header">
+      <span class="form-title" id="formTitleElem">{{ product.title }}</span>
+    </div>
+
+    <div class="form-container">
+      <div class="form-inner">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">How do you want the video in video box?</label>
+            <div class="form-field">
+              <div class="radio-group">
+                <input
+                  type="radio"
+                  class="radio"
+                  name="properties[Do_you_want_to_customize_the]"
+                  value="Will record by myself"
+                  form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+                >
+                <span>Will record by myself</span>
+              </div>
+              <div class="radio-group">
+                <input
+                  type="radio"
+                  class="radio"
+                  name="properties[Do_you_want_to_customize_the]"
+                  value="Will share the Recording"
+                  form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+                >
+                <span>Will share the Recording</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Name of the special person</label>
+            <div class="form-field">
+              <input
+                type="text"
+                class="form-control"
+                name="properties[Name_of_the_special_person]"
+                form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+                maxlength="50"
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Date of the special occasion</label>
+            <div class="form-field">
+              <input
+                type="date"
+                data-date=""
+                class="form-control"
+                name="properties[Date_of_the_special_occasion]"
+                form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+                data-date-format="DD MM YYYY"
+              >
+              <span class="label-text">(DD/MM/YYYY)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Zodiac sign of the special person</label>
+            <div class="form-field">
+              <input
+                type="text"
+                class="form-control"
+                name="properties[Zodiac_sign_of_the_special_person]"
+                form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Sender's name (optional)</label>
+            <div class="form-field">
+              <input
+                type="text"
+                class="form-control"
+                name="properties[Sender_s_name_Only_If_you_d_like_it_mentioned_on_the_certificate]"
+                form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+                maxlength="50"
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Message for the special person (no emojis, please)</label>
+            <div class="form-field">
+              <textarea
+                type="text"
+                class="form-control"
+                name="properties[Message_for_the_star_chart_Please_do_not_use_emojis_in_the_message]"
+                form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+                maxlength="80"
+              ></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Your e-mail address (For your order-related communication)</label>
+            <div class="form-field">
+              <input
+                type="email"
+                class="form-control"
+                name="properties[Your_e_mail_address]"
+                form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+              >
+              <i class="fa-thin fa-envelope fa-sm icon"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row hidden">
+          <div class="form-group">
+            <label class="form-label">Item Id</label>
+            <div class="form-field">
+              <input
+                type="text"
+                class="form-control"
+                name="properties[Item Id]"
+                value="{{ product.metafields.custom.item_id }}"
+                form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row hidden">
+          <div class="form-group">
+            <label class="form-label">Record Id</label>
+            <div class="form-field">
+              <input
+                type="text"
+                class="form-control"
+                name="properties[Record Id]"
+                value="{{ product.metafields.custom.record_id }}"
+                form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

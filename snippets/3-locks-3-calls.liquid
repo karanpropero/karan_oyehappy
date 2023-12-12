@@ -1,0 +1,208 @@
+{{ 'order-form.css' | asset_url | stylesheet_tag }}
+
+<div class="container customization_form">
+  <form action="" name="{{ product.title }}">
+    <div class="form-header">
+      <span class="form-title" id="formTitleElem">{{ product.title }}</span>
+    </div>
+
+    <div class="form-container">
+      <div class="form-inner">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Name of the special person</label>
+            <div class="form-field">
+              <input
+                type="text"
+                class="form-control"
+                name="properties[Name_of_the_Special_Person]"
+                form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+                maxlength="50"
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Phone number of the special person</label>
+            <div class="form-field">
+              <input
+                type="tel"
+                class="form-control"
+                name="properties[Phone_number_of_the_special_person]"
+                form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Occasion</label>
+            <div class="form-field">
+              <input
+                type="text"
+                class="form-control"
+                name="properties[Occasion]"
+                form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+                maxlength="50"
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">How would you like the calls to be made</label>
+            <div class="form-field">
+              <div class="radio-group">
+                <input
+                  type="radio"
+                  class="radio"
+                  name="properties[How_would_you_like_the_calls_to_be_made]"
+                  value="Throughout the day"
+                  form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+                >
+                <span>Throughout the day</span>
+              </div>
+              <div class="radio-group">
+                <input
+                  type="radio"
+                  class="radio"
+                  name="properties[How_would_you_like_the_calls_to_be_made]"
+                  value="Throughout the week"
+                  form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+                >
+                <span>Throughout the week</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Preferred date/week of the calls</label>
+            <div class="form-field">
+              <input
+                type="date"
+                data-date=""
+                class="form-control"
+                name="properties[Preferred_date_week_of_the_calls]"
+                form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+                data-date-format="DD MM YYYY"
+              >
+              <span class="label-text">(DD/MM/YYYY)</span>
+            </div>
+          </div>
+        </div>
+
+         <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Please share a few interests of the special person</label>
+            <div class="form-field">
+              <input
+                type="text"
+                class="form-control"
+                name="properties[Please_share_a_few_interests_of_the_special_person]"
+                form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Please share a few things that the special person loves doing</label>
+            <div class="form-field">
+              <input
+                type="text"
+                class="form-control"
+                name="properties[Please_share_a_few_things_that_the_special_person_loves_doing]"
+                form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Please share 4-5 adjectives that define the special person</label>
+            <div class="form-field">
+              <input
+                type="text"
+                class="form-control"
+                name="properties[Please_share_4_5_adjectives_that_define_the_special_person]"
+                form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Date of the special occasion</label>
+            <div class="form-field">
+              <input
+                type="date"
+                data-date=""
+                class="form-control"
+                name="properties[Date_of_the_special_occasion]"
+                form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+                data-date-format="DD MM YYYY"
+              >
+              <span class="label-text">(DD/MM/YYYY)</span>
+            </div>
+          </div>
+        </div>
+
+
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Your e-mail address</label>
+            <div class="form-field">
+              <input
+                type="email"
+                class="form-control"
+                name="properties[Your_e_mail_address]"
+                form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+              >
+              <i class="fa-thin fa-envelope fa-sm icon"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row hidden">
+          <div class="form-group">
+            <label class="form-label">Item Id</label>
+            <div class="form-field">
+              <input
+                type="text"
+                class="form-control"
+                name="properties[Item Id]"
+                value="{{ product.metafields.custom.item_id }}"
+                form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row hidden">
+          <div class="form-group">
+            <label class="form-label">Record Id</label>
+            <div class="form-field">
+              <input
+                type="text"
+                class="form-control"
+                name="properties[Record Id]"
+                value="{{ product.metafields.custom.record_id }}"
+                form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>

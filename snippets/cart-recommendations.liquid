@@ -1,0 +1,428 @@
+{% if settings.recommendation-true %}
+{% assign recom_by_metafield = 'false' %}
+
+
+{% for item in cart.items %}
+{% assign recommended_products = item.product.metafields.custom.cart_upsell_products.value %}
+{% if recommended_products != blank %}
+{% assign recom_by_metafield = 'true' %}
+{%  break %}
+{% endif %}
+{% endfor %}
+
+
+
+
+{%- liquid
+  assign cart_collection = collections[settings.cart_collection]
+  assign mobileScrollOnly = true
+  if location == 'drawer'
+    assign mobileScrollOnly = false
+  endif
+-%}
+
+{% if recom_by_metafield == 'false' %}
+
+<div class="cart__item-row cart-recommendations" data-location="{{ location }}">
+  <!--<div class="h3 h3--mobile cart__recommended-title">{{ 'cart.general.recommended_title' | t }}</div> -->
+  <div class="h3 h3--mobile cart__recommended-title cart_title">You May Also Like</div>
+
+  <div class="new-grid custom_recom product-grid " >
+    {% comment %}
+    {% assign limit = 1 %}
+
+    {% for product in cart_collection.products  %}
+    {% assign finditem = 'false' %}
+    
+        {% for item in cart.items %}
+          {% if item.product.title == product.title  %}
+          {% assign finditem = 'true' %}
+          {% endif %}
+          {% endfor %}
+    
+        {% if finditem == 'false' %}  
+        {% assign limit = limit | plus:1 %}
+
+        {% render 'cart-product-grid-item', product: product%}
+
+        {% if settings.quick_shop_enable %}
+        {%  render 'quick-shop-modal', product: product %}
+        {% endif %} 
+    {% if limit == 4 %}
+    {% break %}
+    {% endif %}
+        {% endif %}
+    {%  endfor %}
+{% endcomment %}
+    
+    {% if settings.cart_product1 %}
+       {% render 'cart-product-grid-item', product: settings.cart_product1 %}
+    {% endif %}
+     {% if settings.cart_product2 %}
+    
+     {% render 'cart-product-grid-item', product: settings.cart_product2 %}
+       {% endif %}
+     {% if settings.cart_product3 %}
+     {% render 'cart-product-grid-item', product: settings.cart_product3 %}
+   {% endif %}
+    
+  </div>
+</div>
+{% else %}
+
+<div class="cart__item-row cart-recommendations" data-location="{{ location }}">
+  <!--     <div class="h3 h3--mobile cart__recommended-title">{{ 'cart.general.recommended_title' | t }}</div> -->
+  <div class="h3 h3--mobile cart__recommended-title cart_title">People also bought</div>
+  <div class="new-grid custom_recom product-grid " >
+    {% assign limit = 1 %}
+   
+    
+    {% for item in cart.items %}
+    
+    <div class="upsell_product custom_{{item.product.id}}" >
+    {% assign recommended_products = item.product.metafields.custom.cart_upsell_products.value %}
+    
+    {% if recommended_products != blank %}
+    {% for product_n in recommended_products  %} 
+    {% render 'cart-product-grid-item', product: product_n%}
+{%  break %}
+    {% endfor %}
+    {% endif %}
+      </div>
+    {% endfor %}
+ 
+
+  
+
+  </div>
+</div>
+
+{% endif %}
+
+ <div class="defalt_upsell_product" style="display:none;">
+    {% if settings.cart_product1 %}
+    {% render 'cart-product-grid-item', product: settings.cart_product1 %}
+    {% endif %}
+    {% if settings.cart_product2 %}
+
+    {% render 'cart-product-grid-item', product: settings.cart_product2 %}
+    {% endif %}
+    {% if settings.cart_product3 %}
+    {% render 'cart-product-grid-item', product: settings.cart_product3 %}
+    {% endif %}
+  </div>
+{% endif %}
+
+<style>
+  
+  .mobile_add_btn{
+  display:none;
+  }
+  {% comment %}
+  @media only screen and (max-width: 768px) {
+      .mobile_add_btn{
+  display:flex;
+  }
+      .desktop_add_btn{
+  display:none;
+  }
+    .custom_grid_liner.rid-item.grid-product\~ {
+      width: 100%;
+    /* padding-bottom: 10px; */
+    border-bottom: 1px solid #c4c1c1;
+    margin-bottom: 5px;
+    padding-bottom: 5px;
+}
+    .grid-product__image-wrap.custom_liner_set {
+      flex: 0 0 100px;
+      margin-right: 10px;
+      width: 100px;
+    }
+
+    .grid-item__link.custom_grid-item__link {
+      width: 100%;
+      display: flex;
+          margin: 10px 0px;
+    }
+    .grid-item__meta_custom {
+      margin: 0px;
+      width: 100%;
+    }
+    .grid-item__meta-secondary {
+      display: flex;
+      justify-content: space-between;
+      border-top: none;
+    }
+    button.text-link.quick-add-btn.js-quick-add-btn.custom_quick_add span.btn.btn--circle\~.btn--icon{
+      width: 100%;
+      border-radius: 0px;
+      margin: 0;
+      padding: 5px 10px !important;
+      text-transform: uppercase;
+      
+   
+    background-color: #ec5459;
+    }
+    .cart__recommended-title {
+    margin-bottom: 5px;
+  padding: 10px 10px;
+    border: 1px solid #c4c1c1;
+    border-left: 0;
+    border-right: 0;
+    background-color: #03aa9f;
+    color: #fff;
+}
+    button.text-link.quick-add-btn.js-quick-add-btn.custom_quick_add {
+    min-width: 75px;
+}
+    .site-header__drawer{
+    top:35px;
+    }
+       .cart__item-row.cart-recommendations   .grid-product__title.flex, .grid-product__price-wrap.flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+  }
+  {% endcomment %}
+  
+  
+  .cart_title {
+    font-size: 18px;
+    font-weight: 500;
+    color: #ec5459;
+        margin-bottom: 0;
+}
+              .parent_cart_det {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+}
+  .grid-item__meta-secondary {
+    display: flex;
+    align-items: end;
+    padding-top: 0px;
+}
+
+       @media only screen and (max-width: 768px) {
+
+  
+        .site-header__drawer {
+    overflow: visible!important;
+    max-height: 120vh;
+    height: 120vh;
+    position: relative;
+    z-index: 9;
+    top: 0;
+            background-color: #fff;
+}
+         
+  
+       }
+  {% unless template contains 'cart' %}
+     @media only screen and (max-width: 768px) {
+       {% endunless %}
+  .custom_grid_liner.rid-item.grid-product\~ {
+    padding: 0px;
+    display: -webkit-flex!important;
+    display: -moz-box!important;
+    display: flex!important;
+    -webkit-flex-wrap: wrap;
+    flex-wrap: wrap;
+    -webkit-align-items: center;
+    -moz-box-align: center;
+    align-items: flex-start;
+    width: 200px;
+    min-width: 200px;
+    margin: 20px 0px;
+    background: #fff;
+    border: 1px solid #ec5459;
+    /* -webkit-box-shadow: -2px 4px 8px rgb(134 148 219 / 40%); */
+/*     box-shadow: -2px 4px 8px rgb(134 148 219 / 40%); */
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    margin-right: 10px !important;
+/*     box-shadow: #ec5459c2 -2px 4px 8px 0px; */
+}
+      .cart__scrollable {
+
+    padding-top: 0px;
+}
+/* .cart__item-row--footer.text-center.Payment_icon {
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e8e8e1;
+} */
+      .new-grid.custom_recom.product-grid {
+    overflow-X: auto;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(147,56,93,.7) rgba(147,56,93,.15);
+    display: -webkit-flex;
+    display: -moz-box;
+    display: flex;
+    -webkit-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+}
+/*       .grid-product__image-wrap.custom_liner_set .grid__image-ratio.grid__image-ratio--landscape {
+    width: 120px;
+    margin: auto;
+} */
+/*       .grid-product__image-wrap.custom_liner_set {
+    padding: 30px 0px;
+} */
+     .custom_btn--circle {
+    padding: 6px;
+    margin: 0 0 11px 0px !important;
+    border-radius: 0 0 10px 0 !important;
+}
+      .custom_grid-product__actions{
+    top: 0;
+    left: 0;
+}
+      .h3.h3--mobile.cart__recommended-title {
+    color: #ec5459;
+}
+      .customgrid-item__meta-secondary {
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+            padding-top: 12px;
+}
+      button.text-link.quick-add-btn.js-quick-add-btn.custom_quick_add span.btn.btn--circle\~.btn--icon {
+
+    min-width: 70px;
+}
+
+
+      .cart__scrollable {
+    overflow-y: inherit;
+}
+button.close_cart {
+/*     padding-right: 0px;
+    font-size: 16px; */
+    display: none;
+}
+
+     .cart-open body.template-product.cbb-product-page {
+    overflow: hidden;
+}
+    .cart-open  header#SiteHeader {
+    height: 100vh;
+    overflow: scroll;
+}
+      .cart__footer {
+
+    background-color: #fff;
+}
+         {% unless template contains 'cart' %}
+
+    
+     }
+  {% endunless %}
+  
+  
+  {% unless template contains 'cart' %}
+    @media only screen and (min-width: 768px) {
+
+  .site-header__drawer {
+    overflow: visible !important;
+}
+
+  .cart__item-row.cart-recommendations {
+    position: absolute;
+    top: 0;
+    width: 240px;
+    height: 100vh;
+    overflow: hidden;
+    text-align: center;
+    right: 100%;
+    margin: 0;
+    height: 100vh;
+    overflow-x: hidden;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    padding-top: 20px;
+    padding-bottom: 35px;
+    box-shadow: -10px 0 24px 4px rgb(var(--text-color),.05) inset;
+    transition: transform .25s ease-in;
+    background-color: rgb(245, 241, 236);
+}
+ .cart__item-row.cart-recommendations .new-grid {
+    justify-content: center;
+}
+ .cart__item-row.cart-recommendations .grid-item__meta.grid-item__meta_custom {
+    text-align: center;
+}
+.cart__item-row.cart-recommendations .grid-product__price-wrap.flex {
+    align-items: baseline;
+    justify-content: center;
+      width: 100%;
+}
+    .cart__item-row.cart-recommendations  button.text-link.quick-add-btn.js-quick-add-btn.custom_quick_add {
+    margin-top: 15px;
+    width: 100px;
+    border-radius: 0px;
+}
+      
+.cart__item-row.cart-recommendations .custom_grid_liner.rid-item.grid-product\~ {
+    margin-bottom: 20px;
+}
+   .cart__item-row.cart-recommendations   .custom_grid_liner.rid-item.grid-product\~ {
+    width: 80%;
+}
+      .h3.h3--mobile.cart__recommended-title {
+    margin-bottom: 20px;
+}
+      .cart__scrollable {
+    padding-top: 0px;
+}
+
+
+}
+  {% endunless %}
+  button.site-nav__link.site-nav__link--icon.js-close-header-cart {
+    text-align: right;
+    display: flex;
+    align-items: center;
+    justify-content: end;
+}
+  
+  .template-cart span.btn.btn--circle\~.btn--icon {
+    width: 100%;
+    margin-top: 15px;
+    background-color: #03aa9f;
+}
+ .template-cart  button.text-link.quick-add-btn.js-quick-add-btn.custom_quick_add.desktop_add_btn {
+    width: 40%;
+/*     margin-top: 15px; */
+}
+  .cbb-frequently-bought-discount-message-container.cbb-mobile-view.cbb-tablet-view {
+    margin-top: 20px !important;
+    text-align: left !important;
+}
+  
+  
+  
+ .template-cart  .cart__item {
+
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+ 
+   
+}
+  .cart__item-row.cart-recommendations .custom_grid_liner.rid-item.grid-product\~{
+    max-width: 80%;
+    margin-left:auto;
+    margin-right:auto;
+}
+
+</style>
+
+
+<!-- <div class="updatebtn">
+update
+</div> -->
+
+

@@ -1,0 +1,176 @@
+  {% if product.metafields.productinfo.video != blank  or product.metafields.productinfo.imagetext.value != blank %}
+<div class="page-width">
+    {%- if section.settings.title != blank -%}
+        <header class="section-header ">
+          <h2 class="h3 section-header__title">
+            {{ section.settings.title | escape }}
+          </h2>
+        </header>
+      {%- endif -%}
+    <div class="grid customVideo">
+        {% if section.settings.video-url != blank %}
+        <div class="grid__item medium-up--one-half small--one-whole">
+            <video id="Mp4Video-{{section.id}}" class="video-div " data-type="mp4" src="{{section.settings.video-url}}" loop=""  playsinline=""  width="100%" height='auto'></video>
+       
+        </div>
+        {% elsif product.metafields.productinfo.video != blank %}
+        <div class="grid__item medium-up--one-half small--one-whole">
+            <video id="Mp4Video-{{section.id}}" class="video-div " data-type="mp4" src="{{product.metafields.productinfo.video}}" controls loop=""  playsinline=""  width="100%" height='auto'></video>
+       
+        </div>
+    {% endif %}
+    {% if section.settings.video_details != blank %}
+        <div class="grid__item medium-up--one-half small--one-whole">
+            <div class="video-details">{{ section.settings.video_details }} </div>
+        </div>
+        {% elsif product.metafields.productinfo.video_details != blank %}
+        <div class="grid__item medium-up--one-half small--one-whole text-spacing">
+           <div class="video-details">{{ product.metafields.productinfo.video_details }} </div>
+        </div>
+    {% endif %}
+    </div>
+    <div class="grid customImagetext">
+        {% assign text = product.metafields.productinfo.imagetext %} 
+  {%- if product.metafields.productinfo.imagetext.value != blank -%}
+    {% for item in text.value %}   
+    {% comment %} {% if item.heading != blank %}
+        <h3 class="h3 text-center textHeading small--show medium-up--hide">
+            {{ item.heading }}
+          </h3>
+        {% endif %}     {% endcomment %}
+    <div class="grid__item medium-up--one-quarter medium-down--one-third small--one-whole ">
+       
+        
+        {% if item.image-url != blank %} 
+        <div class="image-wrapper">
+           
+            <img src="{{ item.image-url  }}" loading="lazy" width="100%" height="auto" alt="{{ item.image-url.alt }}" >
+        </div>{% endif %}
+        {% if item.heading != blank %}
+            <h3 class="h3 textHeading flex-fullwidth">
+                {{ item.heading }}
+              </h3>
+            {% endif %}
+        {% if item.content != blank %}
+        <div class="text-wrapper rte-setting rte--block text-spacing">
+       
+            <p>{{ item.content }}</p>
+            
+        </div>{% endif %}
+    </div>
+{% endfor %}
+{% endif %}
+    </div>
+</div>
+<style>
+    .grid.customImagetext {
+        padding-top: 30px;
+    }
+    .grid.customImagetext .textHeading{
+        margin: 10px 0 15px;
+    }
+    .custom-faq .collapsible-trigger-btn--borders {
+        border-bottom: none;
+    }
+    .custom-faq .Collapsible {
+        border: 1px solid #ddd;
+    }
+    .custom-faq .collapsible-trigger-btn--borders.is-open {
+        border-bottom: 1px solid;
+        border-color: #e8e8e1;
+        border-color: var(--colorBorder);
+    }
+     .shopify-section.custom-video .page-width {
+        padding:30px  var(--pageWidthPadding);
+        border-bottom: solid 1px #e8e8e1;
+    }
+    @media  (max-width:768px) {
+        .flex-fullwidth{
+            width: 100%;
+            order: -1;
+            text-align: center;
+        }
+        .grid.customImagetext .textHeading{
+            margin: 20px 0;
+        }
+        .video-details p {
+            text-align: center;
+        }
+       
+        .customImagetext.grid>:nth-of-type(even) {            
+            display: flex;
+            flex-direction: row-reverse;  
+            flex-wrap:wrap;
+    }  
+        .customImagetext.grid>:nth-of-type(odd) {            
+            display: flex;
+            flex-direction: row;  
+            flex-wrap:wrap;
+    }  
+    .customImagetext .image-wrapper {
+/*         width: 45%; */
+      width:100%;
+    }
+    
+    .customImagetext .text-wrapper.rte-setting.rte--block.text-spacing {
+/*         width: 55%; */
+        width:100%;
+        padding:  0 12px;
+    }
+    .customImagetext.grid>:nth-of-type(even) .text-wrapper {
+        padding-left: 0 ;
+      }
+      .customImagetext.grid>:nth-of-type(odd) .text-wrapper {
+        padding-right:0;
+      }
+}
+@media screen and(min-width:768px) {
+    .video-details {
+        font-size: 1.325rem;
+    }
+    
+}
+@media (max-width:768px){.shopify-section.custom-video .page-width .grid.customVideo {display:flex;flex-direction: column-reverse;}}
+.grid.customImagetext {
+    padding-top: 0px;
+}
+
+@media only screen and (min-width: 767px){
+.grid.customImagetext {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+}
+</style>{% endif %}
+{% schema %}
+    {
+        "name": "Custom video section 2",
+        "class": "custom-video",
+        "settings": [
+            {
+                "type": "text",
+                "id": "title",
+                "label": "Heading",
+                "default": "FAQs"
+            },
+            {
+                "type": "url",
+                "id": "video-url",
+                "label": "Video link"
+              },
+              {
+                "type": "richtext",
+                "id": "video_details",
+                "label": "Video details"
+              }
+        ],
+        
+    "presets": [{
+        "name": "Custom video 2"
+
+    }],
+    "templates": ["product"]
+    }
+{% endschema %}
+

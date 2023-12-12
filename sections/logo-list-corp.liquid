@@ -1,0 +1,250 @@
+{%- if section.settings.divider -%}<div class="section--divider">{%- endif -%}
+
+<div class="page-width~ logo_list_page">
+<div class="page_pro_corp">
+{%- if section.settings.title != blank -%}
+<div class="section-header small--text-center logo_list_corp_heading">
+  <h2 class="section-header__title corp_heading_title">{{ section.settings.title | escape }}</h2>
+</div>
+{%- endif -%}
+
+<div class="page-width_corpp">
+
+
+<section class="logoMarqueeSection">
+<div class="container" id="logoMarqueeSection">
+    <div class="default-content-container flex items-center">
+        <div class="default-content-container-inner marquee-wrapper relative overflow-hidden inline-block">
+            <div class="marquee" style="animation-duration: 20s;">
+                 {%- for block in section.blocks -%}
+                 <img src="{{ block.settings.image | img_url: 'master' }}" title="" class="marqueelogo" style="width: 200px; max-width: none;">
+                     {% endfor %}
+            </div>
+            <div class="marquee" style="animation-duration: 20s;">
+            {%- for block in section.blocks -%}
+            <img src="{{ block.settings.image | img_url: 'master' }}" title="" class="marqueelogo" style="width: 200px; max-width: none;">
+               {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+
+{% comment %}
+{%- if section.blocks.size > 0 -%}
+<div  class=" logo-bar logo-bar--{{ section.id }}">
+  <div class="new-grid product-grid {% if section.settings.enbale_slider %} one-time~ {% endif %}">
+
+    
+              <marquee>
+
+    {%- for block in section.blocks -%}
+      <div class="grid-item~ grid-product grid_corp_pro" {{ block.shopify_attributes }}>
+        <div class="logo-bar__item{% if block.settings.image == blank %} logo-bar__item-svg{% endif %}">
+          {%- if block.settings.link != blank -%}
+            <a href="{{ block.settings.link }}" class="logo-bar__link" aria-label="{{ block.settings.image.alt }}">
+          {%- endif -%}
+          {%- if block.settings.image != blank -%}
+            {%- assign img_url = block.settings.image | img_url: 'master' | replace: '_125x.', '_{width}x.' -%}
+          
+          <img class="logo-bar__image lazyload"
+                data-src="{{ img_url }}"
+               data-widths="[360, 540, 720, 1020]" 
+                data-aspectratio="{{ block.settings.image.aspect_ratio }}"
+                data-sizes="auto"
+                alt="{{ block.settings.image.alt }}">
+          {%- else -%}
+            {{ 'logo' | placeholder_svg_tag: 'placeholder-svg placeholder-svg--no-padding' }}
+          {%- endif -%}
+          {%- if block.settings.link != blank -%}
+            </a>
+          {%- endif -%}
+        </div>
+      </div>
+
+    {%- endfor -%}
+      </marquee>
+  </div>
+{%- endif -%}
+{% endcomment %}
+</div>
+</div>
+</div>
+{%- if section.settings.divider -%}</div>{%- endif -%}
+<style>
+.corp_heading_title{
+color:{{ section.settings.heading_color }};
+text-align: center;
+}
+.grid_corp_pro{
+position: unset!important;
+border: none!important;
+}
+.page_pro_corp{
+background:  rgb(0 0 0 / 6%);
+      padding-bottom: 35px;
+}
+.slick-next {
+right: 0px;
+display:none;
+}
+.slick-prev{
+ display:none;
+}
+.grid-item.grid-product.grid_corp_pro.slick-slide {
+margin-bottom: 0px !important;
+}
+.logo-bar__item {
+padding: 0px 5px;
+}
+.page-width_corpp {
+padding-left: 40px;
+}
+@media screen and (max-width: 769px){
+.page-width_corpp{
+padding-left: 10px;
+}
+}
+
+
+
+#logoMarqueeSection {
+max-width: 1920px!important;
+margin: 0 auto;
+}
+
+.default-content-container {
+margin-left: auto;
+margin-right: auto;
+margin-top: 0;
+margin-bottom: 0;
+padding-left: 0rem;
+padding-right: 5rem;
+padding-top: 4.5rem;
+padding-bottom: 4.5rem;
+width: 100%;
+min-height: 100vh;
+}
+
+div.marquee>a>img {
+height: 120px;
+}
+
+.logoMarqueeSection>div>div {
+padding-top: 0;
+padding-bottom: 0;
+min-height: 0;
+}
+
+.marquee-wrapper {
+display:  inline-block;
+white-space: nowrap;
+}
+
+.marquee {
+display:  inline-block;
+white-space: nowrap;
+position: relative;
+transform: translate3d(0%, 0, 0);
+animation-name: marquee;
+animation-timing-function: linear;
+animation-iteration-count: infinite;
+}
+
+.marquee a {
+display:  inline-block;
+white-space: nowrap;
+padding-right: 5.4rem;
+}
+
+/* .marquee-wrapper:hover .marquee {
+animation-play-state: paused !important;
+} */
+
+@keyframes marquee {
+0% {
+    transform: translate3d(0%, 0, 0);
+}
+
+100% {
+    transform: translate3d(-100%, 0, 0);
+}
+}
+</style>
+{% schema %}
+{
+"name": "Logo list Corp",
+"class": "index-section",
+"max_blocks": 12,
+"settings": [
+  {
+    "type": "text",
+    "id": "title",
+    "label": "Heading",
+    "default": "Our brands"
+  },
+{
+    "type": "color",
+    "id": "heading_color",
+    "label": "Heading font color"
+  },
+  {
+    "type": "checkbox",
+    "id": "divider",
+    "label": "Show section divider",
+    "default": false
+  },
+  {
+  "type": "checkbox",
+  "id": "enbale_slider",
+  "default": false,
+  "label": "Slider Enable?"
+}
+],
+"blocks": [
+  {
+    "type": "logo_image",
+    "name": "Logo",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image",
+        "info": "Add alt text for better SEO with 'Edit' button above"
+      },
+      {
+        "type": "url",
+        "id": "link",
+        "label": "Link",
+        "info": "Optional"
+      }
+    ]
+  }
+],
+"presets": [
+  {
+    "name": "Logo list Corp",
+    "blocks": [
+      {
+        "type": "logo_image"
+      },
+      {
+        "type": "logo_image"
+      },
+      {
+        "type": "logo_image"
+      },
+      {
+        "type": "logo_image"
+      },
+      {
+        "type": "logo_image"
+      },
+      {
+        "type": "logo_image"
+      }
+    ]
+  }
+]
+}
+{% endschema %}

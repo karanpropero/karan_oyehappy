@@ -1,0 +1,67 @@
+{%- liquid
+  assign hide_icon_labels = true
+  if nav_position == 'below'
+    assign hide_icon_labels = false
+  endif
+-%}
+
+<div class="site-nav">
+  <div class="site-nav__icons">
+    <a href="{{ routes.search_url }}" class="site-nav__link site-nav__link--icon js-search-header{% if nav_position == 'below' %} medium-up--hide{% endif %} js-no-transition">
+      <i class="sprite sprite-search"></i>
+      <span class="icon__fallback-text">{{ 'general.search.title' | t }}</span>
+    </a>
+    {% comment %}
+    <a class="site-nav__link site-nav__link--icon" href="#">
+      <svg width="20" height="20" viewBox="0 0 23 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+			<path fill-rule="evenodd" clip-rule="evenodd" d="M11.5 3.68836C12.5557 2.01151 14.3551 1.00068 16.2849 1.00048C19.4398 1.0042 21.9964 3.65792 22 6.93259C22 12.905 12.2744 19.6058 11.8604 19.8881C11.6416 20.0373 11.3584 20.0373 11.1396 19.8881C10.7256 19.6058 1 12.905 1 6.93259C1.00009 4.30821 2.66143 1.99576 5.0847 1.24703C7.50797 0.498297 10.1172 1.49124 11.5 3.68836ZM2.3125 6.93259C2.3125 11.5839 9.75887 17.2363 11.5 18.4941C13.2411 17.2363 20.6875 11.5839 20.6875 6.93259C20.6876 4.69885 19.1319 2.79244 17.0092 2.42504C14.8865 2.05764 12.819 3.33694 12.1208 5.44984C12.0298 5.72514 11.7804 5.91004 11.5 5.91004C11.2196 5.91004 10.9702 5.72514 10.8792 5.44984C10.181 3.33695 8.11351 2.05767 5.99083 2.42507C3.86815 2.79247 2.31245 4.69886 2.3125 6.93259Z" fill="#1E1E1E"/>
+			<path d="M16.2849 1.00048L16.2854 0.600475L16.2849 0.600475L16.2849 1.00048ZM11.5 3.68836L11.1615 3.90142L11.5 4.43924L11.8385 3.90146L11.5 3.68836ZM22 6.93259H22.4V6.93215L22 6.93259ZM11.8604 19.8881L12.0857 20.2186L12.0858 20.2186L11.8604 19.8881ZM11.1396 19.8881L10.9142 20.2186L10.9143 20.2186L11.1396 19.8881ZM1 6.93259L0.6 6.93258V6.93259H1ZM5.0847 1.24703L4.96662 0.864853L5.0847 1.24703ZM11.5 18.4941L11.2658 18.8183L11.5 18.9875L11.7342 18.8183L11.5 18.4941ZM2.3125 6.93259H2.7125V6.93258L2.3125 6.93259ZM20.6875 6.93259L20.2875 6.93258V6.93259H20.6875ZM17.0092 2.42504L16.9409 2.81918L17.0092 2.42504ZM12.1208 5.44984L11.741 5.32433L11.741 5.32434L12.1208 5.44984ZM10.8792 5.44984L11.259 5.32434L11.259 5.32433L10.8792 5.44984ZM5.99083 2.42507L6.05905 2.81921L5.99083 2.42507ZM16.2849 0.600475C14.2132 0.600695 12.288 1.68588 11.1615 3.47525L11.8385 3.90146C12.8233 2.33714 14.497 1.40066 16.285 1.40048L16.2849 0.600475ZM22.4 6.93215C22.3962 3.45106 19.6747 0.604476 16.2854 0.600476L16.2845 1.40048C19.2049 1.40392 21.5966 3.86478 21.6 6.93303L22.4 6.93215ZM12.0858 20.2186C12.3008 20.0719 14.8585 18.3104 17.3668 15.8285C18.6208 14.5876 19.8727 13.1568 20.8133 11.6484C21.7515 10.144 22.4 8.53059 22.4 6.93259H21.6C21.6 8.32079 21.0328 9.78458 20.1345 11.2251C19.2386 12.6618 18.0332 14.0436 16.8041 15.2598C14.3461 17.692 11.834 19.422 11.635 19.5577L12.0858 20.2186ZM10.9143 20.2186C11.269 20.4605 11.731 20.4605 12.0857 20.2186L11.6351 19.5576C11.5522 19.6141 11.4478 19.6141 11.3649 19.5576L10.9143 20.2186ZM0.6 6.93259C0.6 8.53059 1.24853 10.144 2.18668 11.6484C3.12728 13.1568 4.37916 14.5876 5.63321 15.8285C8.14151 18.3104 10.6992 20.0719 10.9142 20.2186L11.365 19.5577C11.166 19.422 8.65392 17.692 6.1959 15.2598C4.96681 14.0436 3.7614 12.6618 2.86551 11.2251C1.96717 9.78458 1.4 8.32079 1.4 6.93259H0.6ZM4.96662 0.864853C2.36784 1.66781 0.600094 4.14118 0.6 6.93258L1.4 6.93261C1.40008 4.47523 2.95502 2.3237 5.20278 1.6292L4.96662 0.864853ZM11.8385 3.4753C10.3626 1.1301 7.56853 0.060929 4.96662 0.864853L5.20278 1.6292C7.44742 0.935665 9.87189 1.85238 11.1615 3.90142L11.8385 3.4753ZM11.7342 18.1698C10.8714 17.5465 8.59627 15.8349 6.54097 13.7079C5.51324 12.6444 4.55 11.4866 3.84581 10.318C3.13908 9.14519 2.7125 7.99306 2.7125 6.93259H1.9125C1.9125 8.19776 2.41671 9.49642 3.16059 10.7309C3.907 11.9696 4.91417 13.1757 5.96568 14.2638C8.06884 16.4404 10.3875 18.1839 11.2658 18.8183L11.7342 18.1698ZM20.2875 6.93259C20.2875 7.99306 19.8609 9.14519 19.1542 10.318C18.45 11.4866 17.4868 12.6444 16.459 13.7079C14.4037 15.8349 12.1286 17.5465 11.2658 18.1698L11.7342 18.8183C12.6125 18.1839 14.9312 16.4404 17.0343 14.2638C18.0858 13.1757 19.093 11.9696 19.8394 10.7309C20.5833 9.49642 21.0875 8.19776 21.0875 6.93259H20.2875ZM16.9409 2.81918C18.8615 3.1516 20.2876 4.88271 20.2875 6.93258L21.0875 6.9326C21.0876 4.51499 19.4022 2.43328 17.0774 2.0309L16.9409 2.81918ZM12.5006 5.57534C13.1397 3.64118 15.0231 2.48724 16.9409 2.81918L17.0774 2.0309C14.7498 1.62803 12.4983 3.03269 11.741 5.32433L12.5006 5.57534ZM11.5 6.31004C11.9608 6.31004 12.358 6.00686 12.5006 5.57533L11.741 5.32434C11.7016 5.44342 11.5999 5.51004 11.5 5.51004V6.31004ZM10.4994 5.57533C10.642 6.00686 11.0391 6.31004 11.5 6.31004V5.51004C11.4001 5.51004 11.2984 5.44342 11.259 5.32434L10.4994 5.57533ZM6.05905 2.81921C7.97685 2.48727 9.86025 3.6412 10.4994 5.57535L11.259 5.32433C10.5017 3.03271 8.25018 1.62806 5.92261 2.03093L6.05905 2.81921ZM2.7125 6.93258C2.71245 4.88273 4.1385 3.15162 6.05905 2.81921L5.92261 2.03093C3.59781 2.43331 1.91245 4.515 1.9125 6.9326L2.7125 6.93258Z" fill="#1E1E1E"/>
+		</svg>
+    </a>
+    {% endcomment %}
+
+    <a href="{{ routes.cart_url }}"
+      id="HeaderCartTrigger"
+      aria-controls="HeaderCart"
+      class="site-nav__link site-nav__link--icon js-no-transition"
+      data-icon="{{ settings.cart_icon }}">
+      <span class="cart-link">
+        {%- if settings.cart_icon == 'cart' -%}        
+        <i class="sprite sprite-cart"></i>
+        {%- elsif settings.cart_icon == 'bag-minimal' -%}
+          <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-bag-minimal" viewBox="0 0 64 64"><defs><style>.cls-1{fill:none;stroke:#000;stroke-width:2px}</style></defs><path id="svg_2" data-name="svg 2" class="cls-1" d="M22.53 16.61c0-7.1 4.35-9 9.75-9s9.75 1.9 9.75 9"/><path id="svg_4" data-name="svg 4" class="cls-1" d="M11.66 16.65h41.25V53.4H11.66z"/></svg>
+        {%- else -%}
+          <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-bag" viewBox="0 0 64 64"><defs><style>.cls-1{fill:none;stroke:#000;stroke-width:2px}</style></defs><path class="cls-1" d="M24.23 18c0-7.75 3.92-14 8.75-14s8.74 6.29 8.74 14M14.74 18h36.51l3.59 36.73h-43.7z"/></svg>
+        {%- endif -%}
+        <span class="cart-link__bubble{% if cart.item_count > 0 %} cart-link__bubble--visible{% endif %}">
+          <span class="cart-link__bubble-num">{{ cart.item_count }}</span>
+        </span>
+      </span>
+      <span class="site-nav__icon-label small--hide{% if hide_icon_labels %} icon__fallback-text{% endif %}">
+        {{ 'layout.cart.title' | t }}
+      </span>
+    </a>
+    
+    {%- if shop.customer_accounts_enabled -%}
+      <a class="site-nav__link site-nav__link--icon" href="{{ routes.account_url }}">
+        {% comment %}
+        <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-user" viewBox="0 0 64 64"><defs><style>.cls-1{fill:none;stroke:#000;stroke-miterlimit:10;stroke-width:2px}</style></defs><path class="cls-1" d="M35 39.84v-2.53c3.3-1.91 6-6.66 6-11.42 0-7.63 0-13.82-9-13.82s-9 6.19-9 13.82c0 4.76 2.7 9.51 6 11.42v2.53c-10.18.85-18 6-18 12.16h42c0-6.19-7.82-11.31-18-12.16z"/></svg>
+		{% endcomment %}
+        <img src="{{ 'my-account-icon.jpg' | file_url }}" alt="" style="width:20px;height:20px;" />
+        <span class="site-nav__icon-label small--hide{% if hide_icon_labels %} icon__fallback-text{% endif %}">
+          {{ 'layout.customer.account' | t }}
+        </span>
+      </a>
+    {%- endif -%}
+    {% comment %}
+    mobile menu button removed from here
+    {% endcomment %}
+  </div>
+
+  <div class="site-nav__close-cart">
+    <button type="button" class="site-nav__link site-nav__link--icon js-close-header-cart">
+      <span>{{ 'general.accessibility.close' | t }}</span>
+      <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-close" viewBox="0 0 64 64"><defs><style>.cls-1{fill:none;stroke:#000;stroke-miterlimit:10;stroke-width:2px}</style></defs><path class="cls-1" d="M19 17.61l27.12 27.13m0-27.13L19 44.74"/></svg>
+    </button>
+  </div>
+</div>

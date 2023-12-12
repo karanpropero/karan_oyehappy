@@ -1,0 +1,228 @@
+{%- liquid
+ assign main_menu = linklists[section.settings.main_menu_link_list]
+
+  assign logo_alignment = 'left'
+  assign nav_position = 'below'
+   -%}
+<div class="page-width page-content blog-layout">
+{%- paginate blog.articles by 12 -%}
+
+<div data-section-id="{{ section.id }}" data-section-type="blog">
+  {% comment %}
+  <header class="section-header{% if section.settings.blog_show_tag_filter and blog.tags.size > 0 %} section-header--with-link{% endif %}">
+    <h1 class="section-header__title">
+      {{ blog.title }}
+
+      {%- if section.settings.blog_show_rss -%}
+        <a href="{{ shop.url }}{{ blog.url }}.atom" class="rss-link">
+          <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-rss" viewBox="0 0 20 20"><path fill="#444" d="M5.903 16.586a2.489 2.489 0 1 1-4.977 0 2.489 2.489 0 0 1 4.977 0zM12.956 19.075H9.43c0-4.688-3.817-8.505-8.505-8.505V7.044c6.638 0 12.031 5.393 12.031 12.031z"/><path fill="#444" d="M15.445 19.075c0-8.028-6.493-14.52-14.52-14.52V.925c10.019 0 18.15 8.131 18.15 18.15h-3.63z"/></svg>
+          <span class="icon__fallback-text">RSS</span>
+        </a>
+      {%- endif -%}
+    </h1>
+  </header>
+ {% endcomment %}
+ 
+  <div class="blog_navigation">
+ <div class="header-item header-item--navigation text-center">
+              {%- render 'header-desktop-nav', main_menu: main_menu, nav_position: nav_position, show_mega_products: section.settings.mega_products -%}
+            </div>
+        </div>
+  {% comment %}
+  <ul class="blog__tags">
+  {% for tag in blog.all_tags %}
+            <li>
+              <a href="{{ blog.url }}/tagged/{{ tag | handleize }}" class="button">
+              {{ tag }}
+              </a>
+            </li>
+            {% endfor %}
+  </ul>
+  {% endcomment %}
+  <div class="new-grid container" id="AjaxinateContainer">
+    {%- for article in blog.articles -%}
+      {%- liquid
+        assign style = 'small'
+     -%}
+      {%- render 'article-grid-item',
+        blog: blog,
+        article: article,
+        style: style,
+        show_tags: section.settings.blog_show_tags,
+        show_date: section.settings.blog_show_date,
+        show_comments: section.settings.blog_show_comments,
+        show_author: section.settings.blog_show_author,
+        image_size: section.settings.blog_image_size -%}
+    {%- endfor -%}
+  </div>
+
+  {%- liquid
+    if paginate.pages > 1
+      render 'pagination', paginate: paginate
+    endif
+  -%}
+</div>
+{%- if paginate.pages > 1 -%}
+<div id="AjaxinatePagination">
+      {% if paginate.next %}
+        <a class="btn_Ajx btn" href="{{ paginate.next.url }}">See More</a>
+      {% endif %}
+    </div>
+{% endif %}
+{%- endpaginate -%}
+          </div>
+
+          <style>
+            
+           .template-blog header .header-item.header-item--navigation, 
+           .template-article header .header-item.header-item--navigation, 
+           .blog_page header .header-item.header-item--navigation {
+    display: none;
+  }
+.template-blog .grid-article[data-style=small], .blog-layout__sidebars .grid-article[data-style=small] {
+    flex: 0 0 25%;
+}
+            body.template-article .blog_navigation, .template-blog .blog_navigation {
+    padding-bottom: 30px;
+}
+            .blog_navigation a {
+    font-size: 20px!important;
+}
+.blog-layout__sidebars .grid-article[data-style=small] img, .template-blog .grid-article__image img {
+    height: 300px;
+    border-radius: 20px;
+    width: 100%;
+    object-fit: cover;
+    position: initial;
+    transition: transform 2s;
+    opacity: 1!important;
+}
+            .template-blog .grid-article__image .image-wrap {
+    padding: 0!important;
+    height: initial!important;
+}
+            .grid-article__meta {
+    text-align: left;
+}
+            span.article__sub-meta-date {
+    text-transform: uppercase;
+    font-size: 13px;
+    letter-spacing: 1.5px;
+    margin-top: 8px;
+}
+            body .article__title {
+    font-size: 19px;
+    font-weight: 600;
+    line-height: normal;
+}
+            .grid-article[data-style=small] .grid__image-ratio:before, .grid-article[data-style=medium] .grid__image-ratio:before {
+    padding-bottom: initial;
+}
+            .template-blog .page-width.page-content.blog-layout, .template-article .page-width.page-content.blog-layout, .blog_page .page-width.page-content.blog-layout {
+    padding-top: 8px;
+}
+            .blog_navigation {
+    padding-bottom: 0;
+    padding-top: 10px;
+}
+            .blog_navigation ul:before {
+    display: none;
+}
+body.template-blog .index-section--hero:first-child .hero--padded {
+    margin-bottom: 0!important;
+}
+.grid-article[data-style=small], .template-blog .grid-article[data-style=small], .blog-layout__sidebars .grid-article[data-style=medium] {
+    padding-left: 16px;
+    padding-right: 16px;
+    display: initial;
+    margin-bottom: 30px;
+}
+            @media only screen and (min-width: 768px) and (max-width: 1024px) {
+  .template-blog .grid-article[data-style=small], .blog-layout__sidebars .grid-article[data-style=small] {
+    flex: 0 0 50% !important;
+    text-align: left;
+}
+}
+
+            @media only screen and (max-width: 767px) {
+            body .blog_navigation .site-nav__link {
+                padding: 10px;
+            }
+              body .blog_navigation a {
+    font-size: 16px!important;
+}
+              .template-blog .grid-article[data-style=small], .blog-layout__sidebars .grid-article[data-style=small] {
+    flex: 0 0 100%!important;
+}
+            }
+          </style>
+{% schema %}
+  {
+    "name": "Blog pages",
+    "class": "blog-layout__main",
+    "settings": [
+      {
+"type": "link_list",
+"id": "main_menu_link_list",
+"label": "Blog Navigation",
+"default": "main-menu"
+},
+      {
+        "type": "checkbox",
+        "id": "blog_show_rss",
+        "label": "Show RSS link"
+      },
+      {
+        "type": "checkbox",
+        "id": "blog_show_tags",
+        "label": "Show tags",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "blog_show_date",
+        "label": "Show date",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "blog_show_comments",
+        "label": "Show comment count",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "blog_show_author",
+        "label": "Show author"
+      },
+      {
+        "type": "select",
+        "id": "blog_image_size",
+        "label": "Force image size",
+        "default": "wide",
+        "options": [
+          {
+            "value": "natural",
+            "label": "Natural"
+          },
+          {
+            "value": "square",
+            "label": "Square (1:1)"
+          },
+          {
+            "value": "landscape",
+            "label": "Landscape (4:3)"
+          },
+          {
+            "value": "portrait",
+            "label": "Portrait (2:3)"
+          },
+          {
+            "value": "wide",
+            "label": "Wide (16:9)"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

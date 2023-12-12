@@ -1,0 +1,577 @@
+<div class="page-width page-width--cart page-content">
+
+    {%- render 'breadcrumbs' -%}
+  
+    <header class="section-header text-center{% if cart.item_count == 0 %} section-header--404{% endif %}">
+      <h1 class="section-header__title cart_title">{% comment %}{{ 'cart.general.title' | t }}{% endcomment %} Cart Details</h1>
+      <div class="rte text-spacing">
+        {%- if cart.item_count == 0 -%}
+          <p>{{ 'cart.general.empty' | t }}</p>
+          <hr class="hr--clear hr--small">
+          <p>
+            <a href="{{ routes.root_url }}" class="btn">{{ 'cart.general.continue_shopping' | t }}</a>
+          </p>
+        {%- endif -%}
+      </div>
+    </header>
+  
+    {%- if cart.item_count > 0 -%}
+      <form action="{{ routes.cart_url }}" method="post" data-location="page" id="CartPageForm">
+        <div class="cart__page">
+          <div class="cart__page-col">
+            <div data-products>
+              {% assign flagD = false %}
+              {% assign flagAr = "" | split: ',' %}
+              {% for item in cart.items %}
+                {% for pvar in item.product.variants %}
+                  {% if pvar.requires_shipping and flagD == false %}
+                    {% assign flagD = true %}
+                  {% endif %}
+                {% endfor %}
+                {%- render 'cart-item', product: item -%}
+              {% endfor %}
+
+            </div>
+  
+            <div class="cart_page_-recom">
+            {%- render 'cart-recommendations', location: 'page' -%}
+            </div>
+             <div class="cart_page_-recom_desk">
+            </div>
+          </div>
+          <div class="cart__page-col">
+            {% if settings.cart_notes_enable %}
+              <div class="cart__item-row">
+                <label for="CartNote" class="add-note">
+                  {{ 'cart.general.note' | t }}
+                  <span class="note-icon note-icon--open" aria-hidden="true">
+                    <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-pencil" viewBox="0 0 64 64"><defs><style>.cls-1,.cls-2{fill:none;stroke:#000;stroke-width:2px}.cls-1{stroke-miterlimit:10}</style></defs><path class="cls-1" d="M52 33.96V58H8V14h23.7"/><path class="cls-1" d="M18 47l13-5 24-24-8-8-24 24-5 13zM23 34l8 8"/><path id="svg_2" data-name="svg 2" class="cls-2" d="M47 10l1-1a5.44 5.44 0 0 1 7.82.18A5.52 5.52 0 0 1 56 17l-1 1"/></svg>
+                  </span>
+                  <span class="note-icon note-icon--close">
+                    <svg aria-hidden="true" focusable="false" role="presentation" class="icon icon-close" viewBox="0 0 64 64"><defs><style>.cls-1{fill:none;stroke:#000;stroke-miterlimit:10;stroke-width:2px}</style></defs><path class="cls-1" d="M19 17.61l27.12 27.13m0-27.13L19 44.74"/></svg>
+                    <span class="icon__fallback-text">{{ 'general.accessibility.close' | t }}</span>
+                  </span>
+                </label>
+                <textarea name="note" class="input-full cart__note hide" id="CartNote">{{ cart.note }}</textarea>
+              </div>
+            {% endif %}
+            
+            
+            <p class="cart-attribute__field" style="padding: 0;margin: 0;visibility: hidden;height: 0;width: 0;">
+                <label for="priority-delivery">Priority Delivery</label>
+                <input id="priority-delivery" type="text" name="attributes[Priority Delivery]" value="{{ cart.attributes["Priority Delivery"] }}">
+            </p>
+            <p class="cart-attribute__field" style="padding: 0;margin: 0;visibility: hidden;height: 0;width: 0;">
+                <label for="preferred-delivery-date">Preferred Delivery Date</label>
+                <input id="preferred-delivery-date" type="text" name="attributes[Preferred Delivery Date]" value="{{ cart.attributes["Preferred Delivery Date"] }}">
+            </p>
+            <p class="cart-attribute__field" style="padding: 0;margin: 0;visibility: hidden;height: 0;width: 0;">
+                <label for="starting-delivery-date">Starting Delivery Date</label>
+                <input id="starting-delivery-date" type="text" name="attributes[Starting Delivery Date]" value="{{ cart.attributes["Starting Delivery Date"] }}">
+            </p>
+            {% if flagD %}
+            <div style="display:none">
+              <label for="check-availability">Enter pincode for estimated delivery date <sup style="color: #ec5459;font-size: 20px;top:-0.2em">*</sup></label>
+              <div class="input-group">
+                  <input class="required form-control pincodeValidate" id="shipping-delivery-pincode" maxlength="6" pattern="[0-9]*" type="text" name="attributes[Pincode]" value="{{ cart.attributes["Pincode"] }}" placeholder="Enter Pincode">
+                  <div class="input-group-btn">
+                      <a href="javascript:void(0);" class="btn btn-apply verifying-pincode" id="cart-verify-pincode__button">Check</a>
+                  </div>
+              </div>
+            </div>
+            {% endif %}
+            
+            <div id="cu_order_delivery_dates" class="order-delivery-dates" style="display:none">
+              <h2 class="shipping-heading">Delivery Details</h2>
+              <div class="delivery-details">
+                <div class="card">
+                  
+                  <div class="card-block">
+                    <h3 class="title">Estimated delivery date</h3>
+                    <ul class="list-unstyled">
+                          {% comment %}
+                        {% for item in cart.items %}
+                            {%- assign img_url = item | img_url: '1x1' | replace: '_1x1.', '_{width}x.' -%}
+                          <li class="media" data-wooid="{{ item.product.metafields.my_fields.woopid }}">
+                            <a href="{{ item.url }}" class="image-wrap">
+                              <img class="lazyload"
+                                  data-src="{{ img_url }}"
+                                  data-widths="[180, 360, 540]"
+                                  data-aspectratio="{{ item.aspect_ratio }}"
+                                  data-sizes="auto"
+                                  alt="{{ item.product.title | escape }}">
+                              <noscript>
+                                <img class="lazyloaded" src="{{ item | img_url: '400x' }}" alt="{{ item.product.title | escape }}">
+                              </noscript>
+                            </a>
+                            <div class="media-body">
+                              <h5><a href="{{ item.url }}">{{ item.product.title }}</a></h5>
+                            </div>
+                          </li>
+                        {% endfor %}
+                      {% endcomment %}
+                    </ul>
+                    {% comment %}<h4>Preferred Delivery Date <abbr class="required">*</abbr></h4>{% endcomment %}
+                    <div class="delivery-date">
+                      <div class="checkout-shipping-dates-details" style="display: none;"><span id="deliverystartrange"></span> <span id="daterange-separator" class="daterange-separator"></span>to</span> <span id="deliveryendrange"></span></div>
+                      <input id="gift_delivery_date" type="date" class="datepicker-input gift-datepicker" name="gift_delivery_date" />
+                    </div>
+                  </div>
+                  
+                  <div class="card-header">
+                    <div>
+                      <div style="display:flex;justify-content:space-between">
+                        <h3 class="title">Select Priority Shipping for Rs. 250 <img src="{{ 'product-shipping.png' | file_url }}" alt="shipping icon"></h3>
+                        <label class="switch priority-details">
+                          <input class="availability_question" id="availability_priority_shipping" name="availability_question" type="checkbox" value="" rel="22-Oct-2021">
+                          <div class="p-slider slider round"></div>
+                        </label>
+                      </div>
+                      
+                      <div id="priority_delivery_date" style="display:none">...</div>
+                      <p style="display:none">For extra <i class="fa fa-inr"></i> 250/ two (2) surprises</p>
+                    </div>
+  
+                    <p class="pdcm" id="pdcm"></p> 
+                    
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            {% comment %} custom code ends here {% endcomment %}
+            
+            <div class="cart__item-sub cart__item-row cart__item--subtotal" style="margin-top:15px">
+              <div>{{ 'cart.general.subtotal' | t }}</div>
+              <div data-subtotal>
+                {%- render 'price' with cart.total_price -%}
+              </div>
+            </div>
+  
+            <div data-discounts>
+              {% if cart.cart_level_discount_applications != blank %}
+                <div class="cart__discounts text-right">
+                  <div>
+                    {% for cart_discount in cart.cart_level_discount_applications %}
+                      {%- assign savings = cart_discount.total_allocated_amount | money -%}
+                      <div class="cart__discount">
+                        {{ 'cart.general.savings_html' | t: saved_amount: savings }}
+                        ({{ cart_discount.title }})
+                      </div>
+                    {% endfor %}
+                  </div>
+                </div>
+              {% endif %}
+            </div>
+  
+            {% if settings.cart_terms_conditions_enable %}
+              <div class="cart__item-row cart__terms">
+                <input type="checkbox" id="CartTerms" class="cart__terms-checkbox">
+                <label for="CartTerms" class="text-label">
+                  <small>
+                    {% if settings.cart_terms_conditions_link != blank %}
+                      {{ 'cart.general.terms_html' | t: url: settings.cart_terms_conditions_link }}
+                    {% else %}
+                      {{ 'cart.general.terms' | t }}
+                    {% endif %}
+                  </small>
+                </label>
+              </div>
+            {% endif %}
+  
+            <div class="cart__item-row cart__checkout-wrapper">
+              <button id="process-cart-c" type="submit" name="checkout" data-terms-required="{{ settings.cart_terms_conditions_enable }}" class="btn cart__checkout">
+                {{ 'cart.general.checkout' | t }}
+              </button>
+  
+              {% if additional_checkout_buttons and settings.cart_additional_buttons %}
+                <div class="additional-checkout-buttons">{{ content_for_additional_checkout_buttons }}</div>
+              {% endif %}
+  
+              <a href="{{ routes.all_products_collection_url }}" class="btn btn--secondary cart__continue">
+                {{ 'cart.general.continue_shopping' | t }}
+              </a>
+            </div>
+          
+          
+  
+            <div class="cart__item-row text-center">
+              <small>{{ 'cart.general.shipping_at_checkout' | t }}</small>
+            </div>
+          
+          
+            <div class="cart_page_-recom_mob">
+            </div>
+         
+          </div>
+        </div>
+    </form>
+    
+    
+{% comment %}
+    <script>
+
+        let _giftBaseStartDate = null;
+        let _giftBaseEndDate = null;
+
+        let _giftDeliveryDate = null;
+        let _giftPSA = true;
+        let _giftSuccess = false;
+
+        {% comment %} place order button {% endcomment %}
+        
+        document.getElementById('process-cart-c').addEventListener( 'click', function(event){
+            if( document.getElementById('shipping-delivery-pincode').value === '' || document.getElementById('shipping-delivery-pincode').value.length < 6 ){
+                alert( 'Please enter pincode' );
+                document.getElementById('shipping-delivery-pincode').focus();
+                event.preventDefault();
+                document.getElementById('process-cart-c').classList.remove('btn--loading');
+                return false;
+            }
+
+            if( !window._giftSuccess ){
+                alert('Sorry! shipping is not available for the selected pincode. Please, change it and place order.');
+                document.getElementById('shipping-delivery-pincode').focus();
+                event.preventDefault();
+                document.getElementById('process-cart-c').classList.remove('btn--loading');
+                return false;
+            }
+
+        });
+
+        {% comment %} date picker value change {% endcomment %}
+        document.getElementById('gift_delivery_date').addEventListener('change', function(event){
+            if( document.getElementById('shipping-delivery-pincode').value !== '' ){
+              let _selectedDate = new Date(event.target.value);
+              if( _selectedDate.getDay() == 0 ){
+                alert('Sorry! Shipping not available on a Sunday. Please choose or select another date.');
+                event.target.value = '';
+              }else{
+                document.getElementsByClassName('checkout-shipping-dates-details')[0].style.display = 'block';
+                document.getElementById('deliverystartrange').innerHTML = oyeFormatDateN( event.target.value );
+                document.getElementById('preferred-delivery-date').value = document.getElementById('deliverystartrange').innerHTML;
+                let addDays = 2;
+                if( document.getElementById('priority-delivery').value == 'Yes' ){
+                  addDays = 1;
+                }
+                document.getElementById('deliveryendrange').innerHTML = oyeFormatDateN( oyeFormatDate ( new Date(event.target.value).addDays(addDays) ) );
+              }
+            }else{
+              alert('Please enter pincode');
+            }
+        });
+        
+        {% comment %} date picker value change {% endcomment %}
+        async function getPincodeData(formData){
+
+            // disable priority shipping switch
+            // document.getElementById('availability_priority_shipping').checked = false;            
+
+            fetch('https://oh.oyehappy.com/calculate-shipping-days/', {
+                method: 'POST',
+                body: formData
+            })
+            .then((response) => response.json())
+            .then((json) => {
+                if( json.start_date === undefined ){
+                    window._giftSuccess = false;
+                    displayMessage( '4', document.getElementById('shipping-delivery-pincode').value );
+                }else{
+                    window._giftSuccess = true;
+                    document.getElementsByClassName('checkout-shipping-dates-details')[0].style.display = 'block';
+                    document.getElementById('deliverystartrange').innerHTML = json.start_date;
+                    document.getElementById('deliveryendrange').innerHTML = json.end_date;
+                    document.getElementById('preferred-delivery-date').value = json.start_date;
+                    setDateAttr(json.start_date);
+                }
+            });
+        }
+
+        {% comment %} get all products {% endcomment %}
+        let gifts = [];
+        {% for item in cart.items %}
+            gifts.push( {{ item.product.metafields.my_fields.woopid }} ); 
+        {% endfor %}
+        
+        {% comment %} get details at first {% endcomment %}
+        getDeliveryData( gifts );
+
+        {% comment %} call function {% endcomment %}
+        async function getDeliveryData(_gifts){
+            fetch('https://oh.oyehappy.com/checkout-delivery/', {
+                method: 'POST',
+                body: JSON.stringify({ gifts: _gifts })
+            }).then((response) => response.json()).then((json) => {
+                if( json.psa == 0 ){
+                    _giftPSA = false;
+                }else{
+                    _giftPSA = true;
+                }
+                document.getElementById('preferred-delivery-date').value = json.gdsd;
+                document.getElementById('starting-delivery-date').value = json.gdsd;
+                window._giftBaseStartDate = json.gdsd;
+                window._giftBaseEndDate = json.gded;
+                // window._giftDeliveryDate = json.gdsd;
+                setDateAttr(json.gdsd);
+                _giftDeliveryDate = json.gdsd;                
+            });
+        }
+
+        {% if flagD %}
+        {% comment %} button click {% endcomment %}
+        document.getElementById('cart-verify-pincode__button').addEventListener('click', function(){
+            pinCodeCheck();
+        });
+        
+        {% comment %} button click {% endcomment %}
+        document.getElementById('shipping-delivery-pincode').addEventListener('keyup', function(event){
+            if( event.target.value.length == 6 ){
+                document.getElementById('cu_order_delivery_dates').style.display = 'block';
+              	document.getElementsByClassName('cart__item--subtotal')[0].style.marginTop = '0px';
+                pinCodeCheck();
+            }else{
+              document.getElementById('cu_order_delivery_dates').style.display = 'none';
+              document.getElementsByClassName('cart__item--subtotal')[0].style.marginTop = '15px';
+            }
+        });
+
+        {% comment %} pincode check {% endcomment %}
+        function pinCodeCheck(){
+            
+            // Clear
+            if( document.getElementById('availability_priority_shipping').checked ){
+                let formData = new FormData();
+                formData.append( 'pincode', document.getElementById('shipping-delivery-pincode').value );
+                formData.append( 'pssDeliverydate', document.getElementById('starting-delivery-date').value );
+                formData.append( 'giftDeliveryDate', document.getElementById('starting-delivery-date').value );
+                getPriorityPincodeData( formData );
+            }else{
+                document.getElementById('pdcm').innerHTML = '';
+                document.getElementById('availability_priority_shipping').checked = false;
+                document.getElementById('priority-delivery').value = 'No';
+
+                if( document.getElementById('shipping-delivery-pincode').value !== '' ){
+                    let formData = new FormData();
+                    formData.append( 'pincode', document.getElementById('shipping-delivery-pincode').value );
+                    formData.append( 'giftDeliveryDate', _giftDeliveryDate );
+                    getPincodeData( formData );
+                }else{
+                    displayMessage( '1', null );
+                }
+            }
+        }
+
+        
+        {% endif %}
+
+        {% comment %} on button click {% endcomment %}
+        async function getPriorityPincodeData(formData){
+            fetch('https://oh.oyehappy.com/check-pincode/', {
+                    method: 'POST',
+                    body: formData
+            })
+                .then((response) => response.json())
+            .then((json) => {
+                if( json.start_date === undefined ){
+                    _giftPSA = false;
+                    window._giftSuccess = false;
+                    displayMessage( '2', document.getElementById('shipping-delivery-pincode').value );
+
+                    let formData = new FormData();
+                    formData.append( 'pincode', document.getElementById('shipping-delivery-pincode').value );
+                    formData.append( 'giftDeliveryDate', _giftDeliveryDate );
+                    getPincodeData( formData );
+
+                }else{
+                    window._giftSuccess = true;
+                    document.getElementsByClassName('checkout-shipping-dates-details')[0].style.display = 'block';
+                    document.getElementById('deliverystartrange').innerHTML = json.start_date;
+                    document.getElementById('deliveryendrange').innerHTML = json.end_date;
+                    document.getElementById('preferred-delivery-date').value = json.start_date;
+                    if( json.value == 1 ){
+                        _giftPSA = true;
+                        {% if flagD %}
+                            displayMessage( '3', document.getElementById('shipping-delivery-pincode').value );
+                        {% else %}
+                            displayMessage( '3', '' );
+                        {% endif %}
+                    }else{
+                        _giftPSA = false;
+                        {% if flagD %}
+                            displayMessage( '2', document.getElementById('shipping-delivery-pincode').value );
+                        {% else %}
+                            displayMessage( '2', '' );
+                        {% endif %}
+                    }
+                    setDateAttr(json.start_date);
+                }
+                
+            });
+        }
+
+        {% comment %} default value document.getElementById('priority-delivery').value = 'No'; {% endcomment %}
+        
+
+        {% comment %} priority delivery {% endcomment %}
+        document.getElementById('availability_priority_shipping').addEventListener('change', function( event ){
+            
+            {% if flagD %}
+                let priorityDeliveryCodeCode = document.getElementById('shipping-delivery-pincode').value;
+
+                if( event.target.checked ){
+                    
+                    if( priorityDeliveryCodeCode === '' ){
+                        displayMessage( '1', null );
+                    }else{
+
+                        let formData = new FormData();
+                        formData.append( 'pincode', document.getElementById('shipping-delivery-pincode').value );
+                        formData.append( 'pssDeliverydate', document.getElementById('starting-delivery-date').value );
+                        formData.append( 'giftDeliveryDate', document.getElementById('starting-delivery-date').value );
+                        getPriorityPincodeData( formData );
+                    }
+                    
+                }else{
+                    document.getElementById('cart-verify-pincode__button').click();
+                    document.getElementById('pdcm').innerHTML = '';
+                }
+            {% else %}
+                if( event.target.checked ){
+                    let formData = new FormData();
+                    formData.append( 'pincode', '500015' );
+                    formData.append( 'pssDeliverydate', document.getElementById('starting-delivery-date').value );
+                    formData.append( 'giftDeliveryDate', document.getElementById('starting-delivery-date').value );
+                    getPriorityPincodeData( formData );
+                }else{
+                    document.getElementById('pdcm').innerHTML = '';
+                    let formData = new FormData();
+                    formData.append( 'pincode', '500015' );
+                    formData.append( 'giftDeliveryDate', _giftDeliveryDate );
+                    getPincodeData( formData );
+                }
+            {% endif %}
+            
+        });
+
+        
+        {% comment %} additional functions in use {% endcomment %}
+        
+        Date.prototype.addDays = function(days) {
+            var date = new Date(this.valueOf());
+            date.setDate(date.getDate() + days);
+            return date;
+        }
+
+        function setDateAttr( _date ){
+          document.getElementById('gift_delivery_date').setAttribute( 'min', oyeFormatDate( _date ) );
+        }
+        function oyeFormatDateN( _date ){
+            let nDate = new Date(_date);
+            let formattedDate = nDate.toLocaleDateString("en-US", { day: 'numeric' }) + '-' + nDate.toLocaleDateString("en-US", { month: 'short' }) + '-' + nDate.toLocaleDateString("en-US", { year: 'numeric' });
+            return formattedDate;
+        }
+        function oyeFormatDate( _date ){
+            console.log(_date);
+            if( _date !== '' ){
+                let nDate = new Date(_date);
+                let nDay = nDate.toLocaleDateString("en-US", { day: 'numeric' });
+                let nMonth = nDate.toLocaleDateString("en-US", { month: 'numeric' });
+
+                if( nDay < 10 ) {
+                    nDay = "0" + nDay;
+                }
+
+                if( nMonth < 10 ) {
+                    nMonth = "0" + nMonth;
+                }
+
+                let formattedDate = new Date().getFullYear() + '-' + nMonth + '-' + nDay;
+                console.log(formattedDate);
+                return formattedDate;
+            }
+        }
+
+        function displayMessage( type, pincode ){
+
+            let message = '';
+            let pdShipping = false;
+            let messageClass = 'error';
+            const styleClasses = ["error", "success"];
+
+            switch( type ){
+                case '1':
+                    message = 'Please enter pincode';
+                    break;
+                case '2':
+                    {% if flagD %}
+                        message = 'Sorry! Priority shipping not available to ' + pincode;
+                    {% else %} 
+                        message = 'Sorry! Priority shipping not available';
+                    {% endif %}
+                    break;
+                case '3':
+                    {% if flagD %}
+                        message = 'Yayy! Priority shipping available to ' + pincode + '<br /><span style="color:#111;">Please select priority shipping during checkout too</span>';
+                    {% else %}
+                        message = 'Yayy! Priority shipping available' + '<br /><span style="color:#111;">Please select priority shipping during checkout too</span>';
+                    {% endif %}
+                    pdShipping = true;
+                    messageClass = 'success';
+                    break;
+                default:
+                    message = 'Sorry! Cannot be shipped to ' + pincode;
+                    break;
+            }
+
+            // Clear
+            document.getElementById('pdcm').innerHTML = '';
+            document.getElementById('pdcm').classList.remove(...styleClasses);
+            document.getElementById('pdcm').classList.add(messageClass);
+            document.getElementById('pdcm').innerHTML = message;
+            if( !pdShipping ){
+                document.getElementById('availability_priority_shipping').checked = false;
+                document.getElementById('priority-delivery').value = 'No';
+            }else{
+                document.getElementById('availability_priority_shipping').checked = true;
+                document.getElementById('priority-delivery').value = 'Yes';
+            }
+            
+            if( type === '4' ){
+                document.getElementsByClassName('checkout-shipping-dates-details')[0].style.display = 'block';
+                document.getElementById('deliverystartrange').innerHTML = window._giftBaseStartDate;
+                document.getElementById('deliveryendrange').innerHTML = window._giftBaseEndDate;
+            }
+        }
+
+        {% comment %} self executing function {% endcomment %}
+        (function(){
+            if( document.getElementById('shipping-delivery-pincode').value !== '' && document.getElementById('shipping-delivery-pincode').value.length > 5 ){
+                document.getElementById('cu_order_delivery_dates').style.display = 'block';
+                if( document.getElementById('priority-delivery').value == 'Yes' ){
+                    let formData = new FormData();
+                    formData.append( 'pincode', document.getElementById('shipping-delivery-pincode').value );
+                    formData.append( 'pssDeliverydate', document.getElementById('starting-delivery-date').value );
+                    formData.append( 'giftDeliveryDate', document.getElementById('starting-delivery-date').value );
+                    getPriorityPincodeData( formData );
+                }else{
+                    document.getElementById('pdcm').innerHTML = '';
+                    document.getElementById('availability_priority_shipping').checked = false;
+
+                    let formData = new FormData();
+                    formData.append( 'pincode', document.getElementById('shipping-delivery-pincode').value );
+                    formData.append( 'giftDeliveryDate', document.getElementById('starting-delivery-date').value );
+                    getPincodeData( formData );
+                }
+            }            
+        })();
+
+    </script>
+{% endcomment %}
+    
+    {%- endif -%}
+  
+  {% schema %}
+    {
+      "name": "Cart page"
+    }
+  {% endschema %}

@@ -1,0 +1,41 @@
+<div
+  data-subsection
+  data-section-id="{{ section.id }}"
+  data-section-type="recently-viewed"
+  data-product-id="{{ product.id }}">
+  <div class="index-section index-section--sub-product">
+    <div class="page-width">
+      <header class="section-header">
+        <div class="h2 section-header__title">{{ 'products.general.recent_products' | t }}</div>
+      </header>
+    </div>
+
+    <div class="page-width page-width--flush-small">
+      <div id="RecentlyViewed-{{ section.id }}"></div>
+    </div>
+  </div>
+</div>
+<style>
+  .template-index .recently_cls {
+    margin-bottom: 40px;
+    border-bottom: 1px solid #e8e8e1;
+   padding-bottom: 0px;
+}
+</style>
+{% schema %}
+  {
+    "name": "Recently viewed",
+	"class":"recently_cls",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Recently viewed products are only visible when browsing outside of the editor"
+      }
+    ],
+       "presets": [
+      {
+        "name": "Recently viewed"
+      }
+    ]
+  }
+{% endschema %}

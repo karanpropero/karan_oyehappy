@@ -1,0 +1,76 @@
+{% comment %}
+{%- liquid
+  assign recommend_products = true
+
+  if recommendations.products and recommendations.products_count > 0
+    assign related_collection = recommendations
+  endif
+
+  for tag in product.tags
+    if tag contains '_related'
+      assign include_collection_handle = tag | split: '_' | last
+      assign include_collection = collections[include_collection_handle]
+      if include_collection != empty and include_collection.products_count > 0
+        assign related_collection = include_collection
+        assign recommend_products = false
+        break
+      endif
+    endif
+  endfor
+-%}
+{% endcomment %}
+
+<div
+  id="Recommendations-{{ product.id }}"
+  data-section-id="{{ product.id }}"
+  data-section-type="product-recommendations"
+  data-enable="true"
+  data-product-id="{{ product.id }}"
+  data-url="{{ routes.product_recommendations_url }}"
+  data-limit="5">
+
+  <div
+    data-section-id="{{ product.id }}"
+    data-subsection
+    data-section-type="collection-template"
+    class="index-section index-section--sub-product">
+    <div class="page-width">
+      <header class="section-header">
+        <div class="h3 section-header__title">
+          {{ section.settings.product_recommendations_heading }}
+        </div>
+      </header>
+    </div>
+
+    <div class="page-width page-width--flush-small">
+      <div class="product-recommendations">
+        <div class="new-grid product-grid scrollable-grid--small" data-view="scrollable">
+          {%- for product in collections.all.products -%}
+            {% if product.template_suffix == 'corporate' %}
+              {%- render 'corp-product-grid-item', product: product -%}
+            {% endif %}
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% schema %}
+  {
+    "name": "Recommendations corporate",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Dynamic recommendations use order and product information to change and improve over time. [Learn more](https://help.shopify.com/en/themes/development/recommended-products)"
+      },
+      {
+        "type": "text",
+        "id": "product_recommendations_heading",
+        "label": "Heading",
+        "default": "You may also like"
+      }
+    ]
+  }
+{% endschema %}

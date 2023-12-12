@@ -1,0 +1,535 @@
+<div class="holiday_days" style="display:none;">{{ settings.holiday }}</div>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+  integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+></script>
+{% if chk_is_virtual != 'true' %}
+  <div id="pincode-check__product_c">
+    <div>
+      <h6>Check for the earliest delivery date</h6>
+      <div class="grid">
+        <div class="grid__item medium-up--three-fifths small--four-sixths">
+          <input
+            placeholder="Enter Pincode"
+            pattern="[0-9]*"
+            inputmode="numeric"
+            id="deliverCheckForm_c"
+            name="deliverCheckForm_c"
+            type="text"
+            maxlength="6"
+          >
+        </div>
+        <div class="grid__item medium-up--two-fifths small--two-sixths">
+          <input id="pincode-check__button_c" type="button" class="btn" value="Check" data-wpid="449">
+        </div>
+      </div>
+      <div
+        class="delivery_dates_c{% if product.tags contains 'Apps videos'%} E-gifts{% endif %}"
+        id="_ws_delivery_dates_c"
+      ></div>
+    </div>
+  </div>
+{% endif %}
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datejs/1.0/date.min.js"></script>
+{% assign collection = collections['all-gifts'] %}
+
+<div class="sheetdata" style="display:none;">{{ collection.metafields.my_fields.pincodes }}</div>
+<script>
+    {% if product.metafields.my_fields.cut_off_time != blank %}
+    var chk_is_virtual = {{ product.metafields.my_fields.is_virtual}};
+    {% else %}
+    var chk_is_virtual = "false";
+    {% endif %}
+
+    {% if product.metafields.my_fields.cut_off_time != blank %}
+    var chk_cutoff_time =  {{ product.metafields.my_fields.cut_off_time }};
+    {% else %}
+    var chk_cutoff_time =  {{ settings.cutofftime }};
+    {% endif %}
+
+    {% if product.metafields.my_fields.preparation_time != blank %}
+    var chk_prepration_time = parseFloat({{ product.metafields.my_fields.preparation_time }});
+    {% else %}
+    var chk_prepration_time = 1;
+    {% endif %}
+
+    var days_extand = {{ settings.days_extand }};
+
+
+   var sunday__holiday_standard = 'false';
+    {% if settings.sunday_working_chk  %}
+    var sunday__holiday_standard = 'true';
+    {% endif %}
+
+
+     var sunday__holiday_priorty = 'false';
+    {% if settings.sunday_working_chk_priorty  %}
+    var sunday__holiday_priorty = 'true';
+    {% endif %}
+
+
+    var sheetData = {{ collection.metafields.my_fields.pincodes  }};
+    var currentDate = new Date();
+    var currentTime = new Date().getHours();
+
+  // Checking Data in json code
+    function checkInSheet(pincode){
+      var Priority = "";
+      var Delivery = "";
+      for(var i=0; i<sheetData.length; i++){
+        var pincodeList = sheetData[i]['Pincode'];
+        if(pincodeList && pincodeList == pincode){
+          Priority = sheetData[i]['Priority'];
+          Delivery = sheetData[i]['Delivery_Time'];
+          break;
+        }
+      }
+      return {Priority,Delivery};
+    }
+
+    $(document).on('click', '#pincode-check__button_c', function(){
+     // var value = $('#deliverCheckForm_c').val();
+var pinvalue = $(this).parents('#pincode-check__product_c');
+var value = pinvalue.find('#deliverCheckForm_c').val();
+      if(value.length == 6){
+        var $response  = checkInSheet(value);
+        var $result = $response;
+
+
+        console.log($result['Priority']);
+        if($result['Priority'] == '' || $result['Delivery_Time'] == ''){
+          $('.delivery_dates_c').html('<span>Standard delivery available in 7 Days.</span>');
+        }
+        else{
+  //         WHen Priorty shpping true in jsondata
+          if($result['Priority'] == 'true'){
+            var Priority_shipping =  "";
+            var standard_shipping = "";
+  //        When cut off time cross current time
+            console.log("chk_cutoff_time" + chk_cutoff_time);
+             console.log(currentTime);
+           if(currentTime > chk_cutoff_time){
+
+              console.log('first');
+              var calculate_time_standrad = parseFloat(chk_prepration_time) + parseFloat($result['Delivery']) ;
+              var calculate_time_standrad_next = parseFloat(chk_prepration_time) + parseFloat($result['Delivery']) + days_extand;
+
+
+              var calculate_time_priotity =  2;
+              var calculate_time_priotity_next =  3;
+
+             const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                                  "July", "Aug", "Sep", "Oct", "Nov", "Dec"];
+             const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+
+              var future = enddateget(calculate_time_standrad);
+              // var future = new Date(); // get today date
+              future.setDate(future.getDate());
+
+               var futureDay = weekday[future.getDay()]; // Get the day of the week from the future date
+
+              var future_next = enddateget(calculate_time_standrad_next)// get today date
+              future_next.setDate(future_next.getDate());
+
+               var future_nextDay = weekday[future_next.getDay()]; // Get the day of the week from the future_next date
+             
+              var future_p = enddateget_priorty(calculate_time_priotity)// get today date
+              future_p.setDate(future_p.getDate());
+
+              var future_Dayp = weekday[future_p.getDay()]; // Get the day of the week from the future_next date
+
+              var future_p_next = enddateget_priorty(calculate_time_priotity_next)// get today date
+              future_p_next.setDate(future_p_next.getDate());
+              //               var finalDate = ((future.getMonth() + 1) < 10 ? '0' : '') + (future.getMonth() + 1) +'-'+ future.getDate();
+              //               console.log(finalDate);
+
+              var future_Dayp_next = weekday[future_p_next.getDay()]; // Get the day of the week from the future_next date
+
+              // Date range
+            // standard_shipping = "<span class='standard_deliver'>Standard delivery from " + future.getDate() +"-" + monthNames[(future.getMonth())] +  " to "  + future_next.getDate() +"-" + monthNames[(future_next.getMonth())] +"</span>";
+           //  Priority_shipping = "<span class='standard_deliver'>Priority delivery from " + future_p.getDate() +"-" + monthNames[(future_p.getMonth())] +  " to "  + future_p_next.getDate() +"-" + monthNames[(future_p_next.getMonth())] +"</span>"
+               
+             standard_shipping = "<span class='standard_deliver'>Get it by " + futureDay +"-" + future_nextDay +"</span>";
+               Priority_shipping = "<span class='standard_deliver'>Priority shipping by " + future_Dayp +"-" + future_Dayp_next +"</span>"
+
+            // single date
+           // standard_shipping = "<span class='standard_deliver'>Standard delivery on " + future.getDate() +"-" + monthNames[(future.getMonth())] + "</span>";
+           // Priority_shipping = "<span class='standard_deliver'>Priority delivery on " + future_p.getDate() +"-" + monthNames[(future_p.getMonth())] + "</span>"
+
+            }
+
+            else if (currentTime == chk_cutoff_time){
+
+              console.log('second');
+
+              var calculate_time_standrad = parseFloat(chk_prepration_time) + parseFloat($result['Delivery']) ;
+
+              var calculate_time_standrad_next = parseFloat(chk_prepration_time) + parseFloat($result['Delivery']) + days_extand;
+
+
+
+              var calculate_time_priotity =  2;
+              var calculate_time_priotity_next =  3;
+
+              const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                                  "July", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+               const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+              
+              var future = enddateget(calculate_time_standrad);
+              // var future = new Date(); // get today date
+              future.setDate(future.getDate());
+              
+               var futureDay = weekday[future.getDay()]; // Get the day of the week from the future date
+              
+              var future_next = enddateget(calculate_time_standrad_next)// get today date
+              future_next.setDate(future_next.getDate());
+
+              var future_nextDay = weekday[future_next.getDay()]; // Get the day of the week from the future_next date
+              
+              var future_p = enddateget_priorty(calculate_time_priotity)// get today date
+              future_p.setDate(future_p.getDate());
+
+               var future_Dayp = weekday[future_p.getDay()]; // Get the day of the week from the future_next date
+              
+              var future_p_next = enddateget_priorty(calculate_time_priotity_next)// get today date
+              future_p_next.setDate(future_p_next.getDate());
+              //               var finalDate = ((future.getMonth() + 1) < 10 ? '0' : '') + (future.getMonth() + 1) +'-'+ future.getDate();
+              //               console.log(finalDate);
+
+              var future_Dayp_next = weekday[future_p_next.getDay()]; // Get the day of the week from the future_next date
+              
+              // Date Range
+               // standard_shipping = "<span class='standard_deliver'>Standard delivery from " + future.getDate() +"-" + monthNames[(future.getMonth())] +  " to "  + future_next.getDate() +"-" + monthNames[(future_next.getMonth())] +"</span>";
+               // Priority_shipping = "<span class='standard_deliver'>Priority delivery from " + future_p.getDate() +"-" + monthNames[(future_p.getMonth())]  +  " to "  + future_p_next.getDate() +"-" + monthNames[(future_p_next.getMonth())] +"</span>"
+              // Date Range
+               standard_shipping = "<span class='standard_deliver'>Get it by " + futureDay +"-" + future_nextDay +"</span>";
+               Priority_shipping = "<span class='standard_deliver'>Priority shipping by " + future_Dayp +"-" + future_Dayp_next +"</span>"
+
+              
+              // Single Date
+             // standard_shipping = "<span class='standard_deliver'>Standard delivery from " + future.getDate() +"-" + monthNames[(future.getMonth())] + "</span>";
+            //  Priority_shipping = "<span class='standard_deliver'>Priority delivery on " + future_p.getDate() +"-" + monthNames[(future_p.getMonth())]  + "</span>"
+
+            }
+            else{
+              console.log('third');
+              var calculate_time_standrad = parseFloat(chk_prepration_time) + parseFloat($result['Delivery']);
+              var calculate_time_standrad_next = parseFloat(chk_prepration_time) + parseFloat($result['Delivery']) + days_extand;
+
+
+
+              var calculate_time_priotity =  1;
+              var calculate_time_priotity_next = 2;
+
+              const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                                  "July", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+              const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+              
+              var future = enddateget(calculate_time_standrad);
+              // var future = new Date(); // get today date
+              future.setDate(future.getDate());
+
+              var futureDay = weekday[future.getDay()]; // Get the day of the week from the future date
+              
+              var future_next = enddateget(calculate_time_standrad_next)// get today date
+              future_next.setDate(future_next.getDate());
+
+              var future_nextDay = weekday[future_next.getDay()]; // Get the day of the week from the future_next date
+              
+              var future_p = enddateget_priorty(calculate_time_priotity)// get today date
+              future_p.setDate(future_p.getDate());
+              //               var finalDate = ((future.getMonth() + 1) < 10 ? '0' : '') + (future.getMonth() + 1) +'-'+ future.getDate();
+              //               console.log(finalDate);
+
+               var future_Dayp = weekday[future_p.getDay()]; // Get the day of the week from the future_next date
+              
+                 var future_p_next = enddateget_priorty(calculate_time_priotity_next)// get today date
+              future_p_next.setDate(future_p_next.getDate());
+
+               var future_Dayp_next = weekday[future_p_next.getDay()]; // Get the day of the week from the future_next date
+             
+              // Date Range
+              // standard_shipping = "<span class='standard_deliver'>Standard delivery from " + future.getDate() +"-" + monthNames[(future.getMonth())] +  " to "  + future_next.getDate() +"-" + monthNames[(future_next.getMonth())] +"</span>";
+              //  Priority_shipping = "<span class='standard_deliver'>Priority delivery from " + future_p.getDate() +"-" + monthNames[(future_p.getMonth())] +  " to "  + future_p_next.getDate() +"-" + monthNames[(future_p_next.getMonth())] +"</span>"
+
+                standard_shipping = "<span class='standard_deliver'>Get it by " + futureDay +"-" + future_nextDay +"</span>";
+               Priority_shipping = "<span class='standard_deliver'>Priority shipping by " + "Tomorrow" +"-" + future_Dayp_next +"</span>"
+
+
+              // Single Date
+          // standard_shipping = "<span class='standard_deliver'>Standard delivery on " + future.getDate() +"-" + monthNames[(future.getMonth())] + "</span>";
+         //  Priority_shipping = "<span class='standard_deliver'>Priority delivery on " + future_p.getDate() +"-" + monthNames[(future_p.getMonth())] +  "</span>"
+
+
+            }
+            {% if product.tags contains 'Apps videos'%}
+            $('.delivery_dates_c').html('<div>'+standard_shipping+'</div>');
+            {% else %}
+            $('.delivery_dates_c').html('<div>'+standard_shipping+'</div><div>'+Priority_shipping+'</div>');
+            {% endif %}
+          }
+          else{
+            var Priority_shipping =  "";
+            var standard_shipping = "";
+            if(currentTime > chk_cutoff_time){
+              console.log("pdt");
+              var calculate_time_standrad = parseFloat(chk_prepration_time) + parseFloat($result['Delivery']);
+              var calculate_time_standrad_next = parseFloat(chk_prepration_time) + parseFloat($result['Delivery']) + days_extand;
+
+              var calculate_time_priotity =  parseFloat($result['Delivery']) + 1;
+
+            const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                                  "July", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+              const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+              
+              var future = enddateget(calculate_time_standrad);
+              // var future = new Date(); // get today date
+              future.setDate(future.getDate());
+
+               var futureDay = weekday[future.getDay()]; // Get the day of the week from the future date
+
+              var future_next = enddateget(calculate_time_standrad_next)// get today date
+              future_next.setDate(future_next.getDate());
+
+              var future_nextDay = weekday[future_next.getDay()]; // Get the day of the week from the future_next date
+              
+              var future_p = enddateget(calculate_time_priotity)// get today date
+              future_p.setDate(future_p.getDate());
+              //               var finalDate = ((future.getMonth() + 1) < 10 ? '0' : '') + (future.getMonth() + 1) +'-'+ future.getDate();
+              //               console.log(finalDate);
+
+              var future_Dayp = weekday[future_p.getDay()]; // Get the day of the week from the future_next date
+
+             if((calculate_time_standrad && calculate_time_standrad_next) > 6){
+              standard_shipping = "<span class='standard_deliver'>Standard delivery from " + future.getDate() +"-" + monthNames[(future.getMonth())] +  " to "  + future_next.getDate() +"-" + monthNames[(future_next.getMonth())] +"</span>";
+                 Priority_shipping = "<span class='standard_deliver'>Priority delivery is not available for the selected pincode</span>"               
+                 }
+                else{            
+              // Date Range
+                standard_shipping = "<span class='standard_deliver'>Get it by " + futureDay +"-" + future_nextDay +"</span>";
+                Priority_shipping = "<span class='standard_deliver'>Priority delivery is not available for the selected pincode</span>"
+                }
+              // Single Date
+             // standard_shipping = "<span class='standard_deliver'>Standard delivery on " + future.getDate() +"-" + monthNames[(future.getMonth())] +"</span>";
+            }
+            else if (currentTime == chk_cutoff_time){
+
+              var calculate_time_standrad = parseFloat(chk_prepration_time) + parseFloat($result['Delivery']);
+
+              var calculate_time_standrad_next = parseFloat(chk_prepration_time) + parseFloat($result['Delivery']) + days_extand;
+
+              var calculate_time_priotity =  parseFloat($result['Delivery']) + 1;
+
+             const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                                  "July", "Aug", "Sep", "Oct", "Nov", "Dec"];
+              
+              const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+
+              var future = enddateget(calculate_time_standrad);
+              // var future = new Date(); // get today date
+              future.setDate(future.getDate());
+
+               var futureDay = weekday[future.getDay()]; // Get the day of the week from the future date
+
+              var future_next = enddateget(calculate_time_standrad_next)// get today date
+              future_next.setDate(future_next.getDate());
+
+              var future_nextDay = weekday[future_next.getDay()]; // Get the day of the week from the future_next date
+
+              var future_p = enddateget(calculate_time_priotity)// get today date
+              future_p.setDate(future_p.getDate());
+
+              //               var finalDate = ((future.getMonth() + 1) < 10 ? '0' : '') + (future.getMonth() + 1) +'-'+ future.getDate();
+              //               console.log(finalDate);
+
+              var future_Dayp = weekday[future_p.getDay()]; // Get the day of the week from the future_next date
+                
+             if((calculate_time_standrad && calculate_time_standrad_next) > 6){
+                standard_shipping = "<span class='standard_deliver'>Standard delivery from " + future.getDate() +"-" + monthNames[(future.getMonth())] +  " to "  + future_next.getDate() +"-" + monthNames[(future_next.getMonth())] +"</span>";
+                 Priority_shipping = "<span class='standard_deliver'>Priority delivery is not available for the selected pincode</span>"               
+             // Single Date
+             // standard_shipping = "<span class='standard_deliver'>Standard delivery on " + future.getDate() +"-" + monthNames[(future.getMonth())] +"</span>";
+                }
+                else{
+              // Date Range
+                standard_shipping = "<span class='standard_deliver'>Get it by " + futureDay +"-" + future_nextDay +"</span>";
+                 Priority_shipping = "<span class='standard_deliver'>Priority delivery is not available for the selected pincode</span>"
+                }
+            }
+            else{
+
+              var calculate_time_standrad = parseFloat(chk_prepration_time) + parseFloat($result['Delivery']);
+              var calculate_time_priotity =  parseFloat($result['Delivery']);
+              var calculate_time_standrad_next = parseFloat(chk_prepration_time) + parseFloat($result['Delivery']) + days_extand;
+
+             const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+                                  "July", "Aug", "Sep", "Oct", "Nov", "Dec"];
+              const weekday = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+               
+              
+              var future = enddateget(calculate_time_standrad);
+              // var future = new Date(); // get today date
+              future.setDate(future.getDate());
+
+             var futureDay = weekday[future.getDay()]; // Get the day of the week from the future date
+             
+              
+              var future_next = enddateget(calculate_time_standrad_next)// get today date
+              future_next.setDate(future_next.getDate());
+              
+
+             var future_nextDay = weekday[future_next.getDay()]; // Get the day of the week from the future_next date
+         
+              
+              var future_p = enddateget(calculate_time_priotity)// get today date
+              future_p.setDate(future_p.getDate());
+ 
+              
+             var future_Dayp = weekday[future_p.getDay()]; // Get the day of the week from the future_next date
+           
+                if((calculate_time_standrad && calculate_time_standrad_next) > 6){
+                standard_shipping = "<span class='standard_deliver'>Standard delivery from " + future.getDate() +"-" + monthNames[(future.getMonth())] +  " to "  + future_next.getDate() +"-" + monthNames[(future_next.getMonth())] +"</span>";
+                Priority_shipping = "<span class='standard_deliver'>Priority delivery is not available for the selected pincode</span>"
+                }
+            else{
+              // Date Range
+             standard_shipping = "<span class='standard_deliver'>Get it by " + futureDay + "-"  + future_nextDay +"</span>";
+            // Single Date
+              Priority_shipping = "<span class='standard_deliver'>Priority delivery is not available for the selected pincode</span>"
+            }
+              
+            }
+
+             {% if product.tags contains 'Apps videos'%}
+            $('.delivery_dates_c').html('<div>'+standard_shipping+'</div>');
+            {% else %}
+            $('.delivery_dates_c').html('<div>'+standard_shipping+'</div><div>'+Priority_shipping+'</div>');
+            {% endif %}
+
+          }
+        }
+
+      }
+      else{
+        $('.delivery_dates_c').html('<span>Please enter 6 digit pincode</span>');
+      }
+    });
+
+    function nl2br(str){
+      return str.replace(/(?:\r\n|\r|\n)/g, '');
+    }
+
+
+    function enddateget(adddays){
+      var dates_of_holidays = nl2br($('.holiday_days').text());
+      var n_dates = dates_of_holidays.split(',');
+      var holiday = [];
+
+      let arrayLength = n_dates.length;
+
+      for(let i = 0 ; i < arrayLength; i++) {
+        var val = n_dates[i].split('-');
+        var getmonth = val[1] - 1;
+        var holidays = new Date(val[2], getmonth, val[0]);
+        holiday.push(holidays);
+      }
+
+
+      //         holiday[0] = new Date(2022, 3, 28);//remember that month is 0 to 11
+      //         holiday[1] = new Date(2022, 4, 5);//remember that month is 0 to 11
+      var startDate = new Date();
+      var endDate = new Date(), noOfDaysToAdd = adddays, count = 0;
+
+      while (count < noOfDaysToAdd) {
+
+        endDate.setDate(endDate.getDate()+1);
+
+        // Date.getDay() gives weekday starting from 0(Sunday) to
+        // 6(Saturday)
+
+        if(sunday__holiday_standard == 'true'){
+        if (!isHoliday(endDate, holiday)) {
+          count++;
+        }
+        }
+
+         if(sunday__holiday_standard == 'false'){
+         if (endDate.getDay() != 0  && !isHoliday(endDate, holiday)) {
+          count++;
+        }
+        }
+      }
+
+      return endDate;
+    }
+
+
+    function enddateget_priorty(adddays){
+      var dates_of_holidays = nl2br($('.holiday_days').text());
+      var n_dates = dates_of_holidays.split(',');
+      var holiday = [];
+
+      let arrayLength = n_dates.length;
+
+      for(let i = 0 ; i < arrayLength; i++) {
+        var val = n_dates[i].split('-');
+        var getmonth = val[1] - 1;
+        var holidays = new Date(val[2], getmonth, val[0]);
+        holiday.push(holidays);
+      }
+
+
+      //         holiday[0] = new Date(2022, 3, 28);//remember that month is 0 to 11
+      //         holiday[1] = new Date(2022, 4, 5);//remember that month is 0 to 11
+      var startDate = new Date();
+      var endDate = new Date(), noOfDaysToAdd = adddays, count = 0;
+
+      while (count < noOfDaysToAdd) {
+
+        endDate.setDate(endDate.getDate()+1);
+
+        // Date.getDay() gives weekday starting from 0(Sunday) to
+        // 6(Saturday)
+
+        if(sunday__holiday_priorty == 'true'){
+        if (!isHoliday(endDate, holiday)) {
+          count++;
+        }
+        }
+
+         if(sunday__holiday_priorty == 'false'){
+         if (endDate.getDay() != 0  && !isHoliday(endDate, holiday)) {
+          count++;
+        }
+        }
+      }
+
+      return endDate;
+    }
+
+    function isHoliday(dt, arr){
+      var bln = false;
+
+      for ( var i = 0; i < arr.length; i++) {
+        if (compare(dt, arr[i])){ //If days are not holidays
+          bln = true;
+          break;
+        }
+      }
+      return bln;
+    }
+
+    function compare(dt1, dt2){
+      var equal = false;
+      if(dt1.getDate() == dt2.getDate() && dt1.getMonth() == dt2.getMonth() && dt1.getFullYear() == dt2.getFullYear()) {
+        equal = true;
+      }
+      return equal;
+    }
+</script>

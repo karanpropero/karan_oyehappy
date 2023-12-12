@@ -1,0 +1,97 @@
+{%- if section.settings.show_announcement -%}
+  <div class="corporate toolbar__item toolbar__item--announcements">
+    {%- if section.settings.home_page_only == false or template.name == 'index' -%}
+      <div class="track_order">
+        <a href="https://www.oyehappy.com/apps/shipway_track">Track your order</a>
+      </div>
+
+      <div class="announcement-content">
+        <a class="link" target="blank" href="{{ section.settings.link }}">
+          <img
+            class="announcement_icon"
+            style="width: 100px; height: 100px;"
+            src="//www.oyehappy.com/cdn/shop/files/whatsapp-icon-24.png?v=2566047132356319940"
+            alt="whats app"
+          >
+          <p>{{ section.settings.text }}</p>
+        </a>
+      </div>
+    {%- endif -%}
+  </div>
+{%- endif -%}
+
+<style>
+    .corporate.toolbar__item {
+        width: 100%;
+        background-color: #ec5459;
+        color: #ffffff;
+        display: flex;
+        justify-content: space-between;
+        padding: 10px 0;
+        position: fixed;
+        z-index: 99;
+    }
+    .corporate.toolbar__item .track_order a {
+        color: #ffffff;
+        padding: 0 40px;
+        font-size: 14px;
+        cursor: pointer;
+    }
+    .corporate.toolbar__item .announcement-content a.link {
+        display: flex;
+        color: #ffffff;
+        font-size: 14px;
+        padding: 0 40px;
+        align-items: end;
+        text-decoration: none;
+    }
+      .corporate.toolbar__item .announcement-content a.link img.announcement_icon {
+        padding-right: 5px;
+    }
+
+@media only screen and (max-width: 767px) {
+  .corporate.toolbar__item .track_order {
+      display: none;
+  }
+  .corporate.toolbar__item .announcement-content {
+    width: 100%;
+}
+  .corporate.toolbar__item .announcement-content a.link {
+      justify-content: center;
+  }
+  .corporate.toolbar__item {
+    padding: 3px 0;
+}
+}
+</style>
+
+{% schema %}
+{
+  "name": "Announcement Corporate",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_announcement",
+      "label": "Show announcement",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "home_page_only",
+      "label": "Home page only",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Announcement text",
+      "default": "Announce something here"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Announcement link"
+    }
+  ]
+}
+{% endschema %}

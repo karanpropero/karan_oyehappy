@@ -1,0 +1,164 @@
+{%- if product.metafields.productinfo.testimonial.value != blank -%}
+<div class="page-width hiii">
+{%- if section.settings.title != blank -%}
+    <header class="section-header ">
+        <h2 class="h3 section-header__title">
+        {{ section.settings.title | escape }}
+        </h2>
+    </header>
+    {%- endif -%}
+<div class="promotion-block">
+{% assign metas = product.metafields.productinfo.testimonial %} 
+{%- if product.metafields.productinfo.testimonial.value != blank -%}
+{% for meta in metas.value %}     
+<div class="promotion-block-list">
+        {% if meta.image-url != blank %} 
+            <div class="image-wrapper">
+                <img src="{{ meta.image-url  }}" loading="lazy"  height="auto" alt="{{ meta.image-url.alt }}" >
+            </div>
+        {% endif %}
+        <div class="promotion-block__content-wrapper text-container">
+            {%- if meta.quote != blank -%}
+                 <blockquote class="text-wrapper rte-setting rte--block text-spacing">{{ meta.quote }}</blockquote>
+            {%- endif -%}
+            {%- if meta.author != blank -%}
+                <h5 class="heading h5 ">  {{ meta.author }}</h5>
+            {%- endif -%}
+        </div>
+</div>
+{% endfor %}
+{% endif %}
+</div>
+</div>
+<style>
+    
+.promotion-block-list{
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+    border-bottom: 0.5px solid #ddd;
+    margin-bottom: 20px;
+}
+.custom-testimonials .page-width {
+    padding:30px  var(--pageWidthPadding) 10px;
+    border-bottom: solid 1px #e8e8e1;
+}
+{% comment %} .promotion-block-list .image-wrapper{
+    flex:1 1 30%;
+    width:30%;
+} {% endcomment %}
+.promotion-block-list .image-wrapper img{
+    max-width:150px;
+    padding:5px 20px;
+}
+.promotion-block-list .text-wrapper{
+    font-style:italic;
+    margin-bottom:0;
+    padding-bottom:40px;
+}
+
+.promotion-block .promotion-block-list:last-child {
+    margin-bottom: 0;
+    border-bottom: 0;
+}
+.custom-testimonials .promotion-block__content-wrapper {
+    position: relative;
+}
+.custom-testimonials .promotion-block__content-wrapper:before,
+.custom-testimonials .promotion-block__content-wrapper:after {
+    font-family: sans-serif;
+  content: "\201C";
+  position: absolute;
+  font-size: 110px;
+  line-height: 1;
+  color: #757f9a;
+  font-style: normal;
+}
+
+.custom-testimonials .promotion-block__content-wrapper:before {
+  top: 0px;
+  left: 0px;
+}
+
+.custom-testimonials .promotion-block__content-wrapper:after {
+  content: "\201D";
+  right: 10px;
+  bottom: 0;
+}
+.custom-testimonials .promotion-block__content-wrapper.text-container {
+    padding: 0 10px;
+}
+
+.custom-testimonials p.text-wrapper.rte-setting.rte--block.text-spacing {
+    padding: 0px 50px;
+}
+@media screen and (min-width:769px) {
+    .promotion-block>:nth-of-type(even) {            
+        display: flex;
+        flex-direction: row-reverse;  
+}  
+    .promotion-block>:nth-of-type(odd) {            
+        display: flex;
+        flex-direction: row;  
+} .shopify-section.custom-testimonials .page-width {
+    padding:30px  var(--pageWidthPadding) 0;
+    border-bottom: solid 1px #e8e8e1;
+}
+.promotion-block>:nth-of-type(odd) .image-wrapper img{
+    padding-left:0;
+
+}
+
+.promotion-block>:nth-of-type(even) .image-wrapper img{
+    padding-right:0;
+
+}
+}
+@media screen and  (max-width:768px){
+ .custom-testimonials .promotion-block__content-wrapper:before,
+.custom-testimonials .promotion-block__content-wrapper:after {
+    font-size:85px;
+} 
+    .promotion-block-list .image-wrapper img {
+        max-width: 150px;
+        padding: 5px 10px;
+    } 
+    .promotion-block-list .image-wrapper {
+        display: block;
+        margin: auto;
+    }   
+    .promotion-block>:nth-of-type(odd),.promotion-block>:nth-of-type(even){
+        flex-direction: column;
+    }
+    blockquote.text-wrapper.rte-setting.rte--block.text-spacing{
+        padding-bottom:30px;
+    }
+    .custom-testimonials .promotion-block__content-wrapper:after{
+        right:0;
+        bottom:-10px;
+    }
+    .custom-testimonials .promotion-block__content-wrapper h5.heading.h5{
+        text-align:center;
+    }
+}
+</style>{%- endif -%}
+{% schema %}
+    {
+        "name": "Custom testimonials",
+        "class": "custom-testimonials",
+        "settings": [
+            {
+                "type": "text",
+                "id": "title",
+                "label": "Heading",
+                "default": "Testimonials"
+            }
+        ],
+        "presets": [{
+            "name": "Custom testimonials"
+    
+        }],
+        "templates": ["product"]
+      
+    }
+{% endschema %}

@@ -1,0 +1,89 @@
+{{ 'order-form.css' | asset_url | stylesheet_tag }}
+
+<div class="container customization_form">
+  <form action="" name="{{ product.title }}">
+    <div class="form-header">
+      <span class="form-title" id="formTitleElem">{{ product.title }}</span>
+    </div>
+
+    <div class="form-container">
+      <div class="form-inner">
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Would you like to upload a voice message?</label>
+            <div class="form-field">
+              <div class="radio-group">
+                <input
+                  type="radio"
+                  class="radio"
+                  name="properties[Would_you_like_to_pload_a_voice_message]"
+                  value="Yes please."
+                  form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+                >
+                <span>Yes please.</span>
+              </div>
+              <div class="radio-group">
+                <input
+                  type="radio"
+                  class="radio"
+                  name="properties[Would_you_like_to_pload_a_voice_message]"
+                  value="No, I'll record it myself."
+                  form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+                >
+                <span>No, I'll record it myself.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row hidden">
+          <div class="form-group">
+            <label class="form-label">Item Id</label>
+            <div class="form-field">
+              <input
+                type="text"
+                class="form-control"
+                name="properties[Item Id]"
+                value="{{ product.metafields.custom.item_id }}"
+                form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+              >
+            </div>
+          </div>
+        </div>
+
+        <div class="form-row hidden">
+          <div class="form-group">
+            <label class="form-label">Record Id</label>
+            <div class="form-field">
+              <input
+                type="text"
+                class="form-control"
+                name="properties[Record Id]"
+                value="{{ product.metafields.custom.record_id }}"
+                form="AddToCartForm-{{ section.id }}-{{ product.id }}"
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+
+<style>
+  .grid__item .product-single__meta .shopify-app-block .cl-upload--wrapper {
+    margin-bottom: 40px;
+    position: relative;
+}
+  .grid__item .product-single__meta .shopify-app-block .cl-upload--wrapper .filepond--panel:after {
+    content: '(Record on your phone first, save in gallery, then upload.)';
+    position: absolute;
+    top: 40px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    font-size: 12px;
+    color: #757677;
+}
+</style>

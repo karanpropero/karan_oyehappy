@@ -1,0 +1,213 @@
+{%- liquid
+  assign collection = collections[section.settings.home_featured_products]
+  assign product_limit = section.settings.count | plus: 1
+  if section.settings.mobile_scrollable
+    assign product_limit = section.settings.count
+  endif
+-%}
+
+{%- if section.settings.divider -%}<div class="section--divider">{%- endif -%}
+
+<div
+  id="CollectionSection-{{ section.id }}"
+  data-section-id="{{ section.id }}"
+  data-section-type="collection-template">
+  {%- if section.settings.title != blank -%}
+    <div class="page-width">
+      <div class="section-header{% if section.settings.view_all %} section-header--with-link{% endif %}">
+        <h2 class="section-header__title">
+          {{ section.settings.title }}
+        </h2>
+        {%- if section.settings.view_all -%}
+          <a href="{{ collections[section.settings.home_featured_products].url }}" class="section-header__link">{{ 'collections.general.all_of_collection' | t }}</a>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endif -%}
+
+  <div class="page-width{% if section.settings.mobile_scrollable %} page-width--flush-small{% endif %}">
+    <div
+      class="new-grid product-grid{% if section.settings.mobile_scrollable %} scrollable-grid--small{% endif %}"
+      data-view="{% if section.settings.mobile_scrollable %}scrollable-5{% else %}xsmall{% endif %}">
+      {%- if section.settings.home_featured_products == blank or collections[section.settings.home_featured_products].empty? or collections[section.settings.home_featured_products].products_count == 0 -%}
+
+        {%- liquid
+          for i in (1..product_limit)
+            unless section.settings.mobile_scrollable
+              assign item_classes = ''
+              if forloop.index > section.settings.count
+                assign item_classes = 'hide'
+                assign mod = forloop.index | modulo: 2
+                if mod == 0
+                  assign item_classes = 'medium-up--hide'
+                endif
+              endif
+            endunless
+            render 'onboarding-product-grid-item', i: i, classes: item_classes
+          endfor
+        -%}
+
+      {%- else -%}
+
+        {%- liquid
+          for product in collections[section.settings.home_featured_products].products limit: product_limit
+            assign item_classes = ''
+            unless section.settings.mobile_scrollable
+              if forloop.index > section.settings.count
+                assign item_classes = 'hide'
+                assign mod = forloop.index | modulo: 2
+                if mod == 0
+                  assign item_classes = 'medium-up--hide'
+                endif
+              endif
+            endunless
+
+            render 'corp-product-grid-item', product: product, collection: collection, classes: item_classes
+
+            if settings.quick_shop_enable
+              render 'quick-shop-modal', product: product
+            endif
+          endfor
+        -%}
+
+      {%- endif -%}
+    </div>
+  </div>
+</div>
+
+{%- if section.settings.divider -%}</div>{%- endif -%}
+
+{% schema %}
+  {
+    "name": "Featured collection corp",
+    "class": "index-section",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Featured collection"
+      },
+      {
+		"type": "url",
+		"id": "link",
+        "label": "Link"
+      },
+      {
+        "type": "collection",
+        "id": "home_featured_products",
+        "label": "Collection"
+      },
+      {
+        "type": "range",
+        "id": "count",
+        "label": "Products",
+        "default": 5,
+        "min": 5,
+        "max": 15,
+        "step": 5
+      },
+      {
+        "type": "checkbox",
+        "id": "mobile_scrollable",
+        "label": "Enable swipe on mobile",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "view_all",
+        "label": "Show 'View all' link",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "divider",
+        "label": "Show section divider",
+        "default": false
+      }
+    ],
+    "presets": [{
+      "name": "Featured collection corp"
+    }],
+    "blocks" : []
+  }
+{% endschema %}
+<style>
+  .grid-product__line_quantity {
+    width: fit-content;
+    padding: 3px 10px;
+    background-color: #7de8e4;
+    color: #000;
+    background: #07a89e70;
+    /* opacity: 0.15; */
+    border-radius: 3px;
+    font-weight: 600;
+}
+.quantity_dropdown {
+    width: 100px;
+    text-align: right;
+}
+  .quantity_dropdown label {
+    margin-bottom: 5px;
+    font-size: 12px !important;
+    text-align: right;
+}
+
+.grid-item__meta-secondary{
+    display: flex;
+    align-items: center;
+    padding-top: 0px;
+    margin-top: 20px;
+    padding-top: 10px;
+    padding-bottom: 0px;
+}
+.grid-item__meta-secondary {
+
+    justify-content: space-between;
+}
+  .styled-select select {
+    padding: 5px 40px 5px 10px;
+    border: 1px solid #D9D9D9;
+        border-radius: 5px;
+        width: 100%;
+}
+span.onwords_text {
+    color: #ec5459;
+    display: block;
+    font-size: 12px;
+}
+input.quantity_if_plus {
+    padding: 5px;
+    /* width: 80px; */
+    padding: 5px 9px 5px 10px;
+    border: 1px solid #D9D9D9;
+    border-radius: 5px;
+  }
+
+  @media only screen and (max-width: 1021px) and (min-width: 769px)  {
+         .grid-item__meta-secondary {
+   display: block;
+} 
+       .quantity_dropdown {
+    width: 100%;
+    text-align: left;
+    margin-top: 10px;
+} 
+  }
+
+  
+    @media screen and (max-width: 1021px){
+/*     .grid-item__meta-secondary {
+   display: block;
+} */
+/*       .quantity_dropdown {
+    width: 100%;
+    text-align: left;
+    margin-top: 10px;
+} */
+      .quantity_dropdown label {
+    margin-bottom: 5px;
+    font-size: 12px !important;
+}
+    }
+</style>

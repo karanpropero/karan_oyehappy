@@ -1,0 +1,208 @@
+{% if product.metafields.my_fields.oye_product_discount %}
+  <div class="product-coupon" style="display:none">
+    <div class="details-header">
+      <h2 class="details-header-title">Available Offers</h2>
+    </div>
+    <ul class="details-bullet">
+      <li>
+        <div class="coupon-row">
+          <span>{{ product.metafields.my_fields.oye_product_discount_des }}</span>
+          <span class="coupon-code">
+            <span>{{ product.metafields.my_fields.oye_product_discount }}</span>
+            <span class="copy-code" data-coupon="{{ product.metafields.my_fields.oye_product_discount }}">
+              <svg width="21" height="21" viewBox="0 0 21 21" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M13.833 1.333h-10c-.916 0-1.666.75-1.666 1.667v11.667h1.666V3h10V1.333zm2.5 3.334H7.167c-.917 0-1.667.75-1.667 1.666V18c0 .917.75 1.667 1.667 1.667h9.166c.917 0 1.667-.75 1.667-1.667V6.333c0-.916-.75-1.666-1.667-1.666zm0 13.333H7.167V6.333h9.166V18z" fill="#02B875"></path>
+              </svg>
+            </span>
+          </span>
+        </div>
+      </li>
+    </ul>
+  </div>
+  <div class="copied-notify">
+    <svg width="15px" height="15px" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path fill-rule="evenodd" clip-rule="evenodd" d="M14.7071 3.00001L5.50001 12.2071L0.292908 7.00001L1.00001 6.29291L5.50001 10.7929L14 2.29291L14.7071 3.00001Z" fill="white"/>
+    </svg>
+    &nbsp; <span>Coupon copied to Clipboard</span>
+  </div>
+{% endif %}
+
+{% comment %}
+  <div id="pincode-check__product">
+     <div>
+       <h6>Check for the earliest delivery date</h6>
+       <div class="grid">
+         <div class="grid__item medium-up--three-fifths small--four-sixths">
+           <input placeholder="Enter Pincode" pattern="[0-9]*" inputmode="numeric" id="deliverCheckForm" name="deliverCheckForm" type="text" maxlength="6"/>
+         </div>
+         <div class="grid__item medium-up--two-fifths small--two-sixths">
+           <input id="pincode-check__button" type="button" class="btn" value="Check" data-wpid="{{ product.metafields.my_fields.woopid }}" />
+         </div>
+       </div>
+       <p class="_delivery_dates" id="_ws_delivery_dates">
+         {% comment %}
+         Standard delivery from 14-Oct to 16-Oct <br/>
+         Priority delivery from 14-Oct to 16-Oct for an extra fee
+         {% endcomment %}
+       </p>
+     </div>
+   </div>
+{% endcomment %}
+
+{%- form 'product', product, id: form_id, class: 'product-single__form' -%}
+  <div className="orichiCampaignCustom" data-productid="0" data-campaignid="0"></div>
+
+  {%- if shop.taxes_included or shop.shipping_policy.body != blank -%}
+    <div class="product__policies rte">
+      {%- if shop.taxes_included -%}
+        {{ 'products.product.include_taxes' | t }}
+      {%- endif -%}
+      {%- if shop.shipping_policy.body != blank -%}
+        {{ 'products.product.shipping_policy_html' | t: link: shop.shipping_policy.url }}
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+
+  {%- liquid
+    assign enable_dynamic_buttons = false
+    if show_dynamic_checkout and template != 'product.preorder'
+      assign enable_dynamic_buttons = true
+    endif
+  -%}
+
+  {%- if enable_dynamic_buttons -%}
+    <div class="payment-buttons">
+  {%- endif -%}
+
+  {%- liquid
+    assign default_text = 'products.product.add_to_cart' | t
+    assign button_text = 'products.product.add_to_cart' | t
+    if template == 'product.preorder'
+      assign default_text = 'products.product.preorder' | t
+      assign button_text = 'products.product.preorder' | t
+    endif
+    unless current_variant.available
+      assign button_text = 'products.product.sold_out' | t
+    endunless
+  -%}
+
+  <div class="submitbtnnss">
+    <button
+      {% if product.empty? %}
+        type="button"
+      {% else %}
+        type="submit"
+      {% endif %}
+      name="add"
+      data-add-to-cart
+      class="btn btn--full add-to-cart btn--secondary {% if enable_dynamic_buttons and product.selling_plan_groups == empty %} btn--secondary{% endif %}"
+      {% unless current_variant.available %}
+        disabled="disabled"
+      {% endunless %}
+    >
+      <span data-add-to-cart-text data-default-text="{{ default_text }}">
+        {{ button_text }}
+      </span>
+    </button>
+
+    <a
+      class="order_sample_button btn btn--full  btn--secondary "
+      data-id="{{ product.selected_or_first_available_variant.id }}"
+    >
+      <span class="btn btn--circle btn--icon order_sample_button_circle">
+        <span> Order a sample</span>
+      </span>
+    </a>
+
+<!-- <button type="submit" name="add" data-add-to-cart class="order_sample_button btn btn--full btn--secondary">
+   <input type="hidden" min="1" type="number" id="quantity" name="quantity" value="1"/>
+  <span class="btn btn--circle btn--icon order_sample_button_circle">
+    Order a sample
+  </span>
+</button> -->
+
+  </div>
+
+  
+  {% comment %}
+    <div class="shopify-payment-button">
+      <button
+        {% if product.empty? %}type="button"{% else %}type="submit"{% endif %}
+        name="add"
+        data-add-to-cart
+        class="btn btn--full shopify-payment-button__button--unbranded {% if enable_dynamic_buttons and product.selling_plan_groups == empty %} btn--secondary{% endif %}"
+        {% unless current_variant.available %} disabled="disabled"{% endunless %}>
+        <span data-add-to-cart-text data-default-text="Buy it now">
+          Buy now
+        </span>
+      </button>
+    </div>
+  {% endcomment %}
+
+  {%- if enable_dynamic_buttons -%}
+    {{ form | payment_button }}
+  {%- endif -%}
+
+  {%- if enable_dynamic_buttons -%}
+    </div>
+  {%- endif -%}
+
+  <div class="shopify-payment-terms product__policies">{{ form | payment_terms }}</div>
+  <select name="id" data-product-select class="product-single__variants no-js">
+    {%- for variant in product.variants -%}
+      {%- if variant.available -%}
+        <option
+          {% if variant == product.selected_or_first_available_variant %}
+            selected="selected"
+          {% endif %}
+          value="{{ variant.id }}"
+        >
+          {{ variant.title }} - {{ variant.price | money_with_currency }}
+        </option>
+      {%- else -%}
+        <option disabled="disabled">{{ variant.title }} - {{ 'products.product.sold_out' | t }}</option>
+      {%- endif -%}
+    {%- endfor -%}
+  </select>
+
+  <textarea data-variant-json class="hide" aria-hidden="true" aria-label="Product JSON">
+    {{ product.variants | json }}
+  </textarea>
+  {%- if product.options.size > 1 -%}
+    <textarea data-current-variant-json class="hide" aria-hidden="true" aria-label="Variant JSON">
+      {{ current_variant | json }}
+    </textarea>
+  {%- endif -%}
+  <span class="payment-form-txn-label">All Transactions are 100% Secure</span>
+{%- endform -%}
+
+<div class="contectinfosection">
+  <p class="headingofdi">Contact us for more info</p>
+
+  <div class="buttons_div">
+    <div class="btncorpcall_custom">
+      <img src="https://cdn.shopify.com/s/files/1/0593/5346/4994/files/imageedit_1_2603939961.png?v=1667218930">
+
+      <button class="corp_btn_custom">
+        <a href="tel:+918143625575">8143625575</a>
+      </button>
+    </div>
+    <div class="contact_or">Or</div>
+    <div class="btncorpwhatsapp">
+      <img src="https://cdn.shopify.com/s/files/1/0593/5346/4994/files/Mask_group_3.png?v=1667218931">
+
+      <button class="corp_btn_custom">
+        <a href="https://wa.me/918143625575" target="_blank">Whatsapp</a>
+      </button>
+    </div>
+  </div>
+</div>
+<script>
+  jQuery(document).ready(function(){
+    jQuery('.copy-code').on('click', function(){
+       navigator.clipboard.writeText(jQuery(this).data('coupon'));
+       jQuery('.copied-notify').addClass('open');
+       setTimeout( function(){ jQuery('.copied-notify').removeClass('open'); }, 3000 );
+    });
+  });
+</script>
